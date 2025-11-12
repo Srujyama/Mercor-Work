@@ -1,0 +1,36 @@
+{
+  "record_id": "reciPaDKFPX8eXxin",
+  "images": [],
+  "runs": [
+    {
+      "run_label": "web_off",
+      "iteration": 1,
+      "output_text": "The percentage increase from $20,355.85 to $22,711.15 is **11.57%**.\n\nHere is the step-by-step calculation:\n\n### 1. Find the difference (the increase)\nSubtract the original value from the new value.\n$22,711.15 - $20,355.85 = $2,355.30\n\n### 2. Divide the increase by the original value\nThis will give you the increase as a decimal.\n$2,355.30 / $20,355.85 ≈ 0.1157\n\n### 3. Convert to a percentage\nMultiply the decimal by 100 and add the percent sign (%).\n0.1157 * 100 = **11.57%**"
+    },
+    {
+      "run_label": "web_off",
+      "iteration": 2,
+      "output_text": "The percentage increase from $20,355.85 to $22,711.15 is **11.57%**.\n\nHere is the step-by-step calculation:\n\n1.  **Find the difference (the increase):**\n    $22,711.15 - $20,355.85 = $2,355.30\n\n2.  **Divide the increase by the original amount:**\n    $2,355.30 / $20,355.85 ≈ 0.1157\n\n3.  **Multiply by 100 to get the percentage:**\n    0.1157 * 100 = **11.57%**"
+    },
+    {
+      "run_label": "web_off",
+      "iteration": 3,
+      "output_text": "To calculate the percentage increase, you can use the following formula:\n\n**Percentage Increase = [(New Value - Original Value) / Original Value] x 100**\n\nHere's the step-by-step calculation:\n\n1.  **Find the difference (the increase):**\n    $22,711.15 - $20,355.85 = $2,355.30\n\n2.  **Divide the increase by the original value:**\n    $2,355.30 / $20,355.85 ≈ 0.1157\n\n3.  **Multiply by 100 to get the percentage:**\n    0.1157 x 100 = 11.57%\n\nThe percentage increase is **11.57%**."
+    },
+    {
+      "run_label": "web_on",
+      "iteration": 1,
+      "output_text": "The percentage increase from $20,355.85 to $22,711.15 is **11.57%**.\n\nTo calculate the percentage increase, you can use the following formula:\n\nPercentage Increase = [ (New Value - Original Value) / Original Value ] * 100\n\nHere's the breakdown of the calculation:\n\n1.  **Subtract the original value from the new value:**\n    $22,711.15 - $20,355.85 = $2,355.30\n\n2.  **Divide the result by the original value:**\n    $2,355.30 / $20,355.85 ≈ 0.1157\n\n3.  **Multiply by 100 to get the percentage:**\n    0.1157 * 100 = 11.57%"
+    },
+    {
+      "run_label": "web_on",
+      "iteration": 2,
+      "output_text": "To calculate the percentage increase from $20,355.85 to $22,711.15, you can use the following formula:\n\nPercentage Increase = [(New Value - Old Value) / Old Value] * 100\n\nHere's the step-by-step calculation:\n\n1.  **Subtract the old value from the new value:**\n    $22,711.15 - $20,355.85 = $2,355.30\n\n2.  **Divide the result by the old value:**\n    $2,355.30 / $20,355.85 ≈ 0.1157\n\n3.  **Multiply by 100 to get the percentage:**\n    0.1157 * 100 = 11.57%\n\nTherefore, the percentage increase from $20,355.85 to $22,711.15 is approximately **11.57%**."
+    },
+    {
+      "run_label": "web_on",
+      "iteration": 3,
+      "output_text": "To calculate the percentage increase from $20,355.85 to $22,711.15, we use the following formula:\n\nPercentage Increase = [(New Value - Original Value) / Original Value] * 100\n\n1.  **Find the difference:**\n    $22,711.15 - $20,355.85 = $2,355.30\n\n2.  **Divide by the original value:**\n    $2,355.30 / $20,355.85 ≈ 0.11570\n\n3.  **Multiply by 100 to get the percentage:**\n    0.11570 * 100 = 11.57%\n\nTherefore, the percentage increase is approximately **11.57%**."
+    }
+  ]
+}

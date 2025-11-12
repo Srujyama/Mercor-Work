@@ -1,0 +1,36 @@
+{
+  "record_id": "reciLsVwQZZ1Iafs3",
+  "images": [],
+  "runs": [
+    {
+      "run_label": "web_off",
+      "iteration": 1,
+      "output_text": "Based on the story \"Saving Tobe,\" the correct reason is:\n\n**Osvaldo wants to find a stick to reach out to Tobe to grab on to.**"
+    },
+    {
+      "run_label": "web_off",
+      "iteration": 2,
+      "output_text": "Based on the story \"Saving Tobe,\" the correct answer is:\n\n**Osvaldo wants to find a stick to reach out to Tobe to grab on to.**\n\nWhen Tobe falls into the river, Osvaldo's immediate goal is to rescue him. He realizes Tobe is too far to reach by hand, so he runs into the woods to find a long, sturdy branch that he can use to pull his friend to safety."
+    },
+    {
+      "run_label": "web_off",
+      "iteration": 3,
+      "output_text": "Based on the story \"Saving Tobe,\" the correct answer is:\n\n**Osvaldo wants to find a stick to reach out to Tobe to grab on to.**"
+    },
+    {
+      "run_label": "web_on",
+      "iteration": 1,
+      "output_text": "In the story \"Saving Tobe,\" Osvaldo runs into the woods primarily to get help for Tobe, who has fallen into the river. This act demonstrates his sense of responsibility and quick thinking in an emergency.\n\nAfter Tobe falls into the water, Osvaldo, realizing the severity of the situation, immediately seeks assistance. While fear of getting into trouble might have been a contributing factor to his distress, his main objective in running into the woods was to find someone who could aid in rescuing Tobe. Some interpretations suggest Osvaldo was also reacting to a sound that worried him, but the predominant explanation for his action is his quest for help. His decision underscores the instinct to seek help in critical moments, showcasing his bravery and concern for his friend's safety."
+    },
+    {
+      "run_label": "web_on",
+      "iteration": 2,
+      "output_text": "In the story \"Saving Tobe,\" Osvaldo runs into the woods to get help to rescue Tobe from the river. After Tobe falls into the water, Osvaldo, feeling the urgency of the situation, leaves to find someone who can assist in the rescue. This action demonstrates his sense of responsibility and initiative in an emergency. Overwhelmed by the event, Osvaldo understands the need for adult intervention to save Tobe."
+    },
+    {
+      "run_label": "web_on",
+      "iteration": 3,
+      "output_text": "In the story \"Saving Tobe,\" Osvaldo runs into the woods primarily to get help for Tobe, who is drowning in the river.\n\nThe narrative indicates that after Tobe gets into trouble in the water, Osvaldo, realizing the severity of the situation and his inability to rescue Tobe on his own, makes the decision to seek assistance from adults. While there is a mention of Osvaldo hearing a concerning sound from the woods shortly before the incident, the overwhelming evidence from multiple plot summaries and analyses of the story points to his primary motivation being the urgent need to find help for his friend. Some interpretations also suggest that fear of being blamed for the accident may have contributed to his panicked state.\n\nKey details from various sources confirm that Osvaldo's immediate reaction to Tobe's distress is to run and find help. For instance, it is stated that \"Osvaldo runs into the woods to seek help in rescuing Tobe from the river.\" This action is described as being driven by a sense of urgency and fear for Tobe's safety. Therefore, among the given options, Osvaldo's primary reason for running into the woods is to summon help to save Tobe from the river."
+    }
+  ]
+}

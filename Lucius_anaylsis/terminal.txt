@@ -1,0 +1,50 @@
+➜  ~ AIRTABLE_VIEW_NAME
+zsh: command not found: AIRTABLE_VIEW_NAME
+➜  ~ cd downloads
+➜  downloads cd mm
+➜  mm toach .env
+zsh: command not found: toach
+➜  mm touch .env
+➜  mm AIRTABLE_VIEW_NAME
+zsh: command not found: AIRTABLE_VIEW_NAME
+➜  mm open -a zed .env
+➜  mm open -a zed .env
+➜  mm python3 mis.py
+Missing required .env variables: AIRTABLE_API_KEY, AIRTABLE_BASE_ID, AIRTABLE_TABLE_ID, AIRTABLE_VIEW_ID
+➜  mm python3 mis.py
+2025-11-11 21:15:12,096 [INFO] Fetched 67 records for view ID 'viwsTeXMlR6jWAF4m'.
+2025-11-11 21:15:12,098 [INFO] [viwsTeXMlR6jWAF4m] total=0 | mis_gemini=0 (nan%) | mis_gpt=0 (nan%) | missing_rubrics=0
+2025-11-11 21:15:12,104 [INFO] Saved CSV -> outputs/misalignment_summary__viwsTeXMlR6jWAF4m.csv
+2025-11-11 21:15:12,516 [INFO] Saved chart -> outputs/misalignment_chart__viwsTeXMlR6jWAF4m.png
+          view_id  total_criteria  misaligned_gemini  misaligned_gpt  pct_misaligned_gemini  pct_misaligned_gpt  records_missing_rubric
+viwsTeXMlR6jWAF4m               0                  0               0                    NaN                 NaN                       0
+➜  mm python3 mis.py
+2025-11-11 21:20:10,657 [INFO] Fetched 67 records for view ID 'viwsTeXMlR6jWAF4m'.
+2025-11-11 21:20:10,657 [INFO] Sample record 0: criteria_parsed=14
+2025-11-11 21:20:10,658 [INFO] Sample record 1: criteria_parsed=14
+2025-11-11 21:20:10,675 [INFO] [viwsTeXMlR6jWAF4m] total_criteria=642 | mis_gemini=107 (16.67%) | mis_gpt=104 (16.20%) | records_with_rubric=67 | records_missing_rubric=0
+2025-11-11 21:20:10,681 [INFO] Saved CSV -> outputs/misalignment_summary__viwsTeXMlR6jWAF4m.csv
+2025-11-11 21:20:10,838 [INFO] Saved chart -> outputs/misalignment_chart__viwsTeXMlR6jWAF4m.png
+          view_id  total_criteria  misaligned_gemini  misaligned_gpt  pct_misaligned_gemini  pct_misaligned_gpt  records_with_rubric  records_missing_rubric
+viwsTeXMlR6jWAF4m             642                107             104              16.666667           16.199377                   67                       0
+➜  mm open -a zed .env
+➜  mm python3 mis.py
+2025-11-11 21:24:26,134 [INFO] Fetched 191 records for view ID 'viwxyetBpKlK14AAs'.
+2025-11-11 21:24:26,135 [INFO] Sample record 0: criteria_parsed=12
+2025-11-11 21:24:26,135 [INFO] Sample record 1: criteria_parsed=15
+2025-11-11 21:24:26,183 [INFO] [viwxyetBpKlK14AAs] total_criteria=1546 | mis_gemini=249 (16.11%) | mis_gpt=233 (15.07%) | records_with_rubric=191 | records_missing_rubric=0
+2025-11-11 21:24:26,196 [INFO] Saved CSV -> outputs/misalignment_summary__viwxyetBpKlK14AAs.csv
+2025-11-11 21:24:26,356 [INFO] Saved chart -> outputs/misalignment_chart__viwxyetBpKlK14AAs.png
+          view_id  total_criteria  misaligned_gemini  misaligned_gpt  pct_misaligned_gemini  pct_misaligned_gpt  records_with_rubric  records_missing_rubric
+viwxyetBpKlK14AAs            1546                249             233               16.10608           15.071151                  191                       0
+➜  mm  open -a zed .env
+➜  mm python3 mis.py
+2025-11-11 21:26:13,868 [INFO] Fetched 181 records for view ID 'viwFHSBIdstYr9Euw'.
+2025-11-11 21:26:13,868 [INFO] Sample record 0: criteria_parsed=8
+2025-11-11 21:26:13,868 [INFO] Sample record 1: criteria_parsed=4
+2025-11-11 21:26:13,914 [INFO] [viwFHSBIdstYr9Euw] total_criteria=1454 | mis_gemini=436 (29.99%) | mis_gpt=319 (21.94%) | records_with_rubric=181 | records_missing_rubric=0
+2025-11-11 21:26:13,925 [INFO] Saved CSV -> outputs/misalignment_summary__viwFHSBIdstYr9Euw.csv
+2025-11-11 21:26:14,091 [INFO] Saved chart -> outputs/misalignment_chart__viwFHSBIdstYr9Euw.png
+          view_id  total_criteria  misaligned_gemini  misaligned_gpt  pct_misaligned_gemini  pct_misaligned_gpt  records_with_rubric  records_missing_rubric
+viwFHSBIdstYr9Euw            1454                436             319              29.986245           21.939477                  181                       0
+➜  mm

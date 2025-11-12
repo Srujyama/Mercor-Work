@@ -1,0 +1,36 @@
+{
+  "record_id": "recRMCsbtNaji40G8",
+  "images": [],
+  "runs": [
+    {
+      "run_label": "web_off",
+      "iteration": 1,
+      "output_text": "In R, a single number is automatically a vector of length one. Simply assign it to a variable.\n\n```R\n# Assign the number to a variable\nmy_vector <- 5\n\n# You can also explicitly use the c() function\nmy_vector <- c(5) \n```\nBoth methods create a vector named `my_vector` containing the number 5."
+    },
+    {
+      "run_label": "web_off",
+      "iteration": 2,
+      "output_text": "Use the `c()` function and the `<-` assignment operator.\n\n**To store a single number:**\n```R\nmy_vector <- c(10)\n```\n\n**To store multiple numbers:**\n```R\nmy_vector <- c(5, 10, 15)\n```"
+    },
+    {
+      "run_label": "web_off",
+      "iteration": 3,
+      "output_text": "Use the `c()` function to combine or \"collect\" numbers into a vector.\n\n**To store one number:**\n```R\nmy_vector <- c(10)\n```\n\n**To store multiple numbers:**\n```R\nmy_vector <- c(10, 20, 30)\n```\n\nTo see what's inside, just type the variable name:\n```R\nmy_vector\n```"
+    },
+    {
+      "run_label": "web_on",
+      "iteration": 1,
+      "output_text": "To store a number in a vector in R, you can use the `c()` function, which stands for \"combine\", and the assignment operator `<-`.\n\nHere's the basic syntax:\n```R\nmy_vector <- c(your_number)\n```\n\nFor example, to store the number 10 in a vector called `my_vector`, you would use:\n```R\nmy_vector <- c(10)\n```\n\nYou can also store multiple numbers in a vector by separating them with commas:\n```R\nmy_vector <- c(10, 20, 30)\n```\n\nIn R, even a single number is technically considered a vector of length one. Therefore, you can also simply assign the number to a variable, and R will store it as a vector:\n```R\nmy_vector <- 10\n```"
+    },
+    {
+      "run_label": "web_on",
+      "iteration": 2,
+      "output_text": "To store a number in a vector in R, you can use the `c()` function, which stands for \"combine\" or \"concatenate\".\n\nEven a single number is treated as a vector in R. For instance:\n\n```R\n# Storing a single number\nmy_vector <- 5\n```\n\nTo create a vector with multiple numbers, separate them with commas inside the `c()` function:\n\n```R\n# Storing multiple numbers\nmy_vector <- c(10, 20, 30)\n```"
+    },
+    {
+      "run_label": "web_on",
+      "iteration": 3,
+      "output_text": "To store a number in a vector in R, you can use the `c()` function, which stands for \"combine\" or \"concatenate\".\n\nHere is a simple example:\n\n```R\n# Store a single number in a vector\nmy_vector <- c(10)\n```\n\nEven a single number is considered a vector in R.\n\nTo store multiple numbers in the same vector, simply separate them with commas:\n\n```R\n# Store multiple numbers in a vector\nmy_vector <- c(10, 20, 30)\n```"
+    }
+  ]
+}

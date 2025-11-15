@@ -1,0 +1,23 @@
+prompt:
+
+I have a .csv file with the following columns
+
+Task ID	Prompt	Rubric JSON	Deep Research Response	Deep Research Total Autograder Points	GPT 5 - Non Reasoning Responses	GPT 5 - Reasoning (Medium)	GPT 5 - Reasoning (High)	Gemini 2.5 Pro - Search	Claude: Sonnet 4.5
+
+I want to make a program that uses the prompt as the input into the LLM APIs
+
+I want to do have the program call the API to fill in the following columns with the output
+
+GPT 5 - Reasoning (High)
+Gemini 2.5 Pro - Search
+Claude: Sonnet 4.5
+
+with the prompt from the prompt columns
+
+all other columns have data in them
+
+I want to store the API keys in an .env file
+
+use the latest models and APIs and the way that they are
+
+give me the whole code

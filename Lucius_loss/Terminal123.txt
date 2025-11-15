@@ -1,0 +1,110 @@
+➜  Lucius_loss git:(main) ✗ python3 airtable.py
+Airtable stats (view: viwcQkSgsonSQBjed)
+
+Field: GPT5 Autorater - Gemini Response Score
+  n           : 35
+  mean        : 37.058466
+  stdev (ddof=1): 15.635345
+  stderr      : 2.642856
+  95% CI half : 5.396711
+  95% CI low  : 31.661755
+  95% CI high : 42.455177
+
+Field: GPT5 Autorater - GPT5 Response Score
+  n           : 35
+  mean        : 46.170807
+  stdev (ddof=1): 17.443896
+  stderr      : 2.948557
+  95% CI half : 6.020952
+  95% CI low  : 40.149855
+  95% CI high : 52.191760
+
+CSV:field,count,mean,stdev,stderr,ci95_halfwidth,ci95_low,ci95_high
+GPT5 Autorater - Gemini Response Score,35,37.058466,15.635345,2.642856,5.396711,31.661755,42.455177
+GPT5 Autorater - GPT5 Response Score,35,46.170807,17.443896,2.948557,6.020952,40.149855,52.191760
+
+
+➜  Lucius_loss git:(main) ✗ python3 airtable.py
+Airtable stats (view: viwsTeXMlR6jWAF4m)
+
+Field: GPT5 Autorater - Gemini Response Score
+  n           : 67
+  mean        : 45.838414
+  stdev (ddof=1): 23.849792
+  stderr      : 2.913716
+  95% CI half : 5.827432
+  95% CI low  : 40.010982
+  95% CI high : 51.665846
+
+Field: GPT5 Autorater - GPT5 Response Score
+  n           : 67
+  mean        : 64.788265
+  stdev (ddof=1): 28.836911
+  stderr      : 3.522989
+  95% CI half : 7.045979
+  95% CI low  : 57.742286
+  95% CI high : 71.834244
+
+CSV:field,count,mean,stdev,stderr,ci95_halfwidth,ci95_low,ci95_high
+GPT5 Autorater - Gemini Response Score,67,45.838414,23.849792,2.913716,5.827432,40.010982,51.665846
+GPT5 Autorater - GPT5 Response Score,67,64.788265,28.836911,3.522989,7.045979,57.742286,71.834244
+
+
+
+➜  Lucius_loss git:(main) ✗ python3 airtable.py
+Airtable stats (view: viwxyetBpKlK14AAs)
+
+Field: GPT5 Autorater - Gemini Response Score
+  n           : 191
+  mean        : 40.813575
+  stdev (ddof=1): 25.848806
+  stderr      : 1.870354
+  95% CI half : 3.665894
+  95% CI low  : 37.147681
+  95% CI high : 44.479469
+
+Field: GPT5 Autorater - GPT5 Response Score
+  n           : 191
+  mean        : 46.128300
+  stdev (ddof=1): 32.668704
+  stderr      : 2.363824
+  95% CI half : 4.633096
+  95% CI low  : 41.495204
+  95% CI high : 50.761396
+
+CSV:field,count,mean,stdev,stderr,ci95_halfwidth,ci95_low,ci95_high
+GPT5 Autorater - Gemini Response Score,191,40.813575,25.848806,1.870354,3.665894,37.147681,44.479469
+GPT5 Autorater - GPT5 Response Score,191,46.128300,32.668704,2.363824,4.633096,41.495204,50.761396
+
+
+
+➜  Lucius_loss git:(main) ✗ python3 airtable.py
+Airtable stats (view: viwFHSBIdstYr9Euw)
+
+Field: GPT5 Autorater - Gemini Response Score
+  n           : 181
+  mean        : 37.982768
+  stdev (ddof=1): 27.081206
+  stderr      : 2.012930
+  95% CI half : 3.945343
+  95% CI low  : 34.037425
+  95% CI high : 41.928112
+
+Field: GPT5 Autorater - GPT5 Response Score
+  n           : 181
+  mean        : 57.949396
+  stdev (ddof=1): 27.496104
+  stderr      : 2.043769
+  95% CI half : 4.005788
+  95% CI low  : 53.943609
+  95% CI high : 61.955184
+
+CSV:field,count,mean,stdev,stderr,ci95_halfwidth,ci95_low,ci95_high
+GPT5 Autorater - Gemini Response Score,181,37.982768,27.081206,2.012930,3.945343,34.037425,41.928112
+GPT5 Autorater - GPT5 Response Score,181,57.949396,27.496104,2.043769,4.005788,53.943609,61.955184
+
+
+viwcQkSgsonSQBjed - IA Rubrics
+viwsTeXMlR6jWAF4m - Text Only
+viwxyetBpKlK14AAs - Image Input
+viwFHSBIdstYr9Euw - Image Output

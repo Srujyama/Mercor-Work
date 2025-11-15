@@ -1,0 +1,2 @@
+view_id,records_with_any_summary_field,gemini_field,gemini_total_criteria,gemini_matches,gemini_mismatches,gemini_pct_matches,gemini_pct_mismatches,gemini_skipped_missing_keys,gemini_skipped_unparseable_bool,gpt5_field,gpt5_total_criteria,gpt5_matches,gpt5_mismatches,gpt5_pct_matches,gpt5_pct_mismatches,gpt5_skipped_missing_keys,gpt5_skipped_unparseable_bool
+viwsTeXMlR6jWAF4m,67,[GPT5 graded] Gemini Response Scoring Summary,642,536,106,83.48909657320873,16.510903426791277,0,0,[GPT5 graded] GPT5 Response Scoring Summary,642,425,217,66.1993769470405,33.8006230529595,0,0

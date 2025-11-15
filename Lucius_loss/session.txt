@@ -1,0 +1,245 @@
+➜  ~ cd downlaods
+cd: no such file or directory: downlaods
+➜  ~ cd downloads
+➜  downloads cd mercor
+➜  mercor git:(main) ✗ cd ..
+➜  downloads cd mercor
+➜  mercor cd lucis_loss
+cd: no such file or directory: lucis_loss
+➜  mercor cd lucius_loss
+➜  lucius_loss git:(main) ✗ touch .env
+➜  lucius_loss git:(main) ✗ open -a zed .env
+➜  lucius_loss git:(main) ✗ cd ..
+➜  mercor git:(main) ✗ cd Lucius_anaylsis
+➜  Lucius_anaylsis git:(main) ✗ open -a zed .env
+➜  Lucius_anaylsis git:(main) ✗ cd lucius_loss
+cd: no such file or directory: lucius_loss
+➜  Lucius_anaylsis git:(main) ✗ cd .. 
+➜  mercor git:(main) ✗ cd lucius_loss
+➜  lucius_loss git:(main) ✗ python3 loss.py
+2025-11-12 19:11:20,844 [INFO] Sample record 0: GEM parsed so far=8, GPT5 parsed so far=8
+2025-11-12 19:11:20,844 [INFO] Sample record 1: GEM parsed so far=12, GPT5 parsed so far=12
+2025-11-12 19:11:21,844 [INFO] [viwFHSBIdstYr9Euw] GEMINI: total=1447, matches=1119 (77.33% if total), mismatches=328 (22.67% if total); GPT5: total=1444, matches=840 (58.17% if total), mismatches=604 (41.83% if total).
+2025-11-12 19:11:21,847 [INFO] Saved CSV -> outputs/autorater_match_summary__viwFHSBIdstYr9Euw.csv
+2025-11-12 19:11:22,093 [INFO] Saved chart -> outputs/autorater_match_chart__viwFHSBIdstYr9Euw.png
+          view_id  records_with_any_summary_field                                  gemini_field  gemini_total_criteria  gemini_matches  gemini_mismatches  gemini_pct_matches  gemini_pct_mismatches  gemini_skipped_missing_keys  gemini_skipped_unparseable_bool                                  gpt5_field  gpt5_total_criteria  gpt5_matches  gpt5_mismatches  gpt5_pct_matches  gpt5_pct_mismatches  gpt5_skipped_missing_keys  gpt5_skipped_unparseable_bool
+viwFHSBIdstYr9Euw                             181 [GPT5 graded] Gemini Response Scoring Summary                   1447            1119                328           77.332412              22.667588                            7                                0 [GPT5 graded] GPT5 Response Scoring Summary                 1444           840              604         58.171745            41.828255                         10                              0
+➜  lucius_loss git:(main) ✗ loss.py
+zsh: command not found: loss.py
+➜  lucius_loss git:(main) ✗ python3 loss.pt
+/Users/srujanyamali/.pyenv/versions/3.11.9/bin/python3: can't open file '/Users/srujanyamali/Downloads/Mercor/Lucius_loss/loss.pt': [Errno 2] No such file or directory
+➜  lucius_loss git:(main) ✗ python3 loss.py
+2025-11-12 19:13:43,922 [INFO] Sample record 0: GEM parsed so far=12, GPT5 parsed so far=12
+2025-11-12 19:13:43,923 [INFO] Sample record 1: GEM parsed so far=27, GPT5 parsed so far=27
+2025-11-12 19:13:45,054 [INFO] [viwxyetBpKlK14AAs] GEMINI: total=1547, matches=1313 (84.87% if total), mismatches=234 (15.13% if total); GPT5: total=1547, matches=1070 (69.17% if total), mismatches=477 (30.83% if total).
+2025-11-12 19:13:45,058 [INFO] Saved CSV -> outputs/autorater_match_summary__viwxyetBpKlK14AAs.csv
+2025-11-12 19:13:45,246 [INFO] Saved chart -> outputs/autorater_match_chart__viwxyetBpKlK14AAs.png
+          view_id  records_with_any_summary_field                                  gemini_field  gemini_total_criteria  gemini_matches  gemini_mismatches  gemini_pct_matches  gemini_pct_mismatches  gemini_skipped_missing_keys  gemini_skipped_unparseable_bool                                  gpt5_field  gpt5_total_criteria  gpt5_matches  gpt5_mismatches  gpt5_pct_matches  gpt5_pct_mismatches  gpt5_skipped_missing_keys  gpt5_skipped_unparseable_bool
+viwxyetBpKlK14AAs                             191 [GPT5 graded] Gemini Response Scoring Summary                   1547            1313                234            84.87395               15.12605                            0                                0 [GPT5 graded] GPT5 Response Scoring Summary                 1547          1070              477         69.166128            30.833872                          0                              0
+➜  lucius_loss git:(main) ✗ python3 loss.py
+2025-11-12 19:14:07,706 [INFO] Sample record 0: GEM parsed so far=14, GPT5 parsed so far=14
+2025-11-12 19:14:07,707 [INFO] Sample record 1: GEM parsed so far=28, GPT5 parsed so far=28
+2025-11-12 19:14:07,737 [INFO] [viwsTeXMlR6jWAF4m] GEMINI: total=642, matches=536 (83.49% if total), mismatches=106 (16.51% if total); GPT5: total=642, matches=425 (66.20% if total), mismatches=217 (33.80% if total).
+2025-11-12 19:14:07,740 [INFO] Saved CSV -> outputs/autorater_match_summary__viwsTeXMlR6jWAF4m.csv
+2025-11-12 19:14:07,921 [INFO] Saved chart -> outputs/autorater_match_chart__viwsTeXMlR6jWAF4m.png
+          view_id  records_with_any_summary_field                                  gemini_field  gemini_total_criteria  gemini_matches  gemini_mismatches  gemini_pct_matches  gemini_pct_mismatches  gemini_skipped_missing_keys  gemini_skipped_unparseable_bool                                  gpt5_field  gpt5_total_criteria  gpt5_matches  gpt5_mismatches  gpt5_pct_matches  gpt5_pct_mismatches  gpt5_skipped_missing_keys  gpt5_skipped_unparseable_bool
+viwsTeXMlR6jWAF4m                              67 [GPT5 graded] Gemini Response Scoring Summary                    642             536                106           83.489097              16.510903                            0                                0 [GPT5 graded] GPT5 Response Scoring Summary                  642           425              217         66.199377            33.800623                          0                              0
+➜  lucius_loss git:(main) ✗ python3 loss.py  
+2025-11-12 19:15:24,727 [INFO] Sample record 0: GEM parsed so far=14, GPT5 parsed so far=14
+2025-11-12 19:15:24,728 [INFO] Sample record 1: GEM parsed so far=28, GPT5 parsed so far=28
+2025-11-12 19:15:24,758 [INFO] [viwsTeXMlR6jWAF4m] GEMINI: total=642, matches=536 (83.49% if total), mismatches=106 (16.51% if total); GPT5: total=642, matches=425 (66.20% if total), mismatches=217 (33.80% if total).
+2025-11-12 19:15:24,761 [INFO] Saved CSV -> outputs/autorater_match_summary__viwsTeXMlR6jWAF4m.csv
+2025-11-12 19:15:24,947 [INFO] Saved chart -> outputs/autorater_match_chart__viwsTeXMlR6jWAF4m.png
+          view_id  records_with_any_summary_field                                  gemini_field  gemini_total_criteria  gemini_matches  gemini_mismatches  gemini_pct_matches  gemini_pct_mismatches  gemini_skipped_missing_keys  gemini_skipped_unparseable_bool                                  gpt5_field  gpt5_total_criteria  gpt5_matches  gpt5_mismatches  gpt5_pct_matches  gpt5_pct_mismatches  gpt5_skipped_missing_keys  gpt5_skipped_unparseable_bool
+viwsTeXMlR6jWAF4m                              67 [GPT5 graded] Gemini Response Scoring Summary                    642             536                106           83.489097              16.510903                            0                                0 [GPT5 graded] GPT5 Response Scoring Summary                  642           425              217         66.199377            33.800623                          0                              0
+➜  lucius_loss git:(main) ✗ python3 loss.py 
+2025-11-12 19:15:50,446 [INFO] Sample record 0: GEM parsed so far=9, GPT5 parsed so far=9
+2025-11-12 19:15:50,446 [INFO] Sample record 1: GEM parsed so far=22, GPT5 parsed so far=22
+2025-11-12 19:15:50,465 [INFO] [viwcQkSgsonSQBjed] GEMINI: total=466, matches=363 (77.90% if total), mismatches=103 (22.10% if total); GPT5: total=466, matches=280 (60.09% if total), mismatches=186 (39.91% if total).
+2025-11-12 19:15:50,469 [INFO] Saved CSV -> outputs/autorater_match_summary__viwcQkSgsonSQBjed.csv
+2025-11-12 19:15:50,658 [INFO] Saved chart -> outputs/autorater_match_chart__viwcQkSgsonSQBjed.png
+          view_id  records_with_any_summary_field                                  gemini_field  gemini_total_criteria  gemini_matches  gemini_mismatches  gemini_pct_matches  gemini_pct_mismatches  gemini_skipped_missing_keys  gemini_skipped_unparseable_bool                                  gpt5_field  gpt5_total_criteria  gpt5_matches  gpt5_mismatches  gpt5_pct_matches  gpt5_pct_mismatches  gpt5_skipped_missing_keys  gpt5_skipped_unparseable_bool
+viwcQkSgsonSQBjed                              35 [GPT5 graded] Gemini Response Scoring Summary                    466             363                103           77.896996              22.103004                            0                                0 [GPT5 graded] GPT5 Response Scoring Summary                  466           280              186         60.085837            39.914163                          0                              0
+➜  lucius_loss git:(main) ✗ python3 plot.py
+Traceback (most recent call last):
+  File "/Users/srujanyamali/Downloads/Mercor/Lucius_loss/plot.py", line 110, in <module>
+    fig.savefig(
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/matplotlib/figure.py", line 3490, in savefig
+    self.canvas.print_figure(fname, **kwargs)
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/matplotlib/backend_bases.py", line 2186, in print_figure
+    result = print_method(
+             ^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/matplotlib/backend_bases.py", line 2042, in <lambda>
+    print_method = functools.wraps(meth)(lambda *args, **kwargs: meth(
+                                                                 ^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/matplotlib/backends/backend_agg.py", line 481, in print_png
+    self._print_pil(filename_or_obj, "png", pil_kwargs, metadata)
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/matplotlib/backends/backend_agg.py", line 430, in _print_pil
+    mpl.image.imsave(
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/matplotlib/image.py", line 1657, in imsave
+    image.save(fname, **pil_kwargs)
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/PIL/Image.py", line 2583, in save
+    fp = builtins.open(filename, "w+b")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/mnt/data/autorater_misalignment_by_view_white.png'
+➜  lucius_loss git:(main) ✗ python3 plot.py
+➜  lucius_loss git:(main) ✗ python3 plot.py
+➜  lucius_loss git:(main) ✗ python3 plot.py
+➜  lucius_loss git:(main) ✗ python3 plot.py
+/Users/srujanyamali/Downloads/Mercor/Lucius_loss/plot.py:126: UserWarning: This figure was using a layout engine that is incompatible with subplots_adjust and/or tight_layout; not calling subplots_adjust.
+  plt.subplots_adjust(right=0.9, top=0.88)
+➜  lucius_loss git:(main) ✗ python3 plot.py
+/Users/srujanyamali/Downloads/Mercor/Lucius_loss/plot.py:99: UserWarning: This figure was using a layout engine that is incompatible with subplots_adjust and/or tight_layout; not calling subplots_adjust.
+  plt.subplots_adjust(top=0.85, bottom=0.12, right=0.92, left=0.08)
+/Users/srujanyamali/Downloads/Mercor/Lucius_loss/plot.py:128: UserWarning: This figure was using a layout engine that is incompatible with subplots_adjust and/or tight_layout; not calling subplots_adjust.
+  plt.subplots_adjust(top=0.85, bottom=0.12, right=0.92, left=0.08)
+➜  lucius_loss git:(main) ✗ cd..
+zsh: command not found: cd..
+➜  lucius_loss git:(main) ✗ cd ..
+➜  mercor git:(main) ✗ cd Lucius_loss
+➜  Lucius_loss git:(main) ✗ touch .env
+➜  Lucius_loss git:(main) ✗ open -a zed .env
+➜  Lucius_loss git:(main) ✗ python3 airtable.py
+Airtable averages (view: viwcQkSgsonSQBjed)
+
+- GPT5 Autorater - Gemini Response Score: count=35, sum=1297.046307, avg=37.058466
+- GPT5 Autorater - GPT5 Response Score: count=35, sum=1615.978250, avg=46.170807
+
+Overall across both fields:
+  count=70, sum=2913.024557, avg=41.614637
+➜  Lucius_loss git:(main) ✗ python3 airtable.py
+  File "/Users/srujanyamali/Downloads/Mercor/Lucius_loss/airtable.py", line 217
+    print(f"Airtable stats (view: {view_id})
+          ^
+SyntaxError: unterminated string literal (detected at line 217)
+➜  Lucius_loss git:(main) ✗ print(f"Airtable stats (view: {view_id})\n")
+
+zsh: invalid mode specification
+➜  Lucius_loss git:(main) ✗ python3 airtable.py
+Airtable stats (view: viwcQkSgsonSQBjed)
+
+Field: GPT5 Autorater - Gemini Response Score
+  n           : 35
+  mean        : 37.058466
+  stdev (ddof=1): 15.635345
+  stderr      : 2.642856
+  95% CI half : 5.396711
+  95% CI low  : 31.661755
+  95% CI high : 42.455177
+
+Field: GPT5 Autorater - GPT5 Response Score
+  n           : 35
+  mean        : 46.170807
+  stdev (ddof=1): 17.443896
+  stderr      : 2.948557
+  95% CI half : 6.020952
+  95% CI low  : 40.149855
+  95% CI high : 52.191760
+
+CSV:field,count,mean,stdev,stderr,ci95_halfwidth,ci95_low,ci95_high
+GPT5 Autorater - Gemini Response Score,35,37.058466,15.635345,2.642856,5.396711,31.661755,42.455177
+GPT5 Autorater - GPT5 Response Score,35,46.170807,17.443896,2.948557,6.020952,40.149855,52.191760
+➜  Lucius_loss git:(main) ✗ python3 airtable.py
+Airtable stats (view: viwsTeXMlR6jWAF4m)
+
+Field: GPT5 Autorater - Gemini Response Score
+  n           : 67
+  mean        : 45.838414
+  stdev (ddof=1): 23.849792
+  stderr      : 2.913716
+  95% CI half : 5.827432
+  95% CI low  : 40.010982
+  95% CI high : 51.665846
+
+Field: GPT5 Autorater - GPT5 Response Score
+  n           : 67
+  mean        : 64.788265
+  stdev (ddof=1): 28.836911
+  stderr      : 3.522989
+  95% CI half : 7.045979
+  95% CI low  : 57.742286
+  95% CI high : 71.834244
+
+CSV:field,count,mean,stdev,stderr,ci95_halfwidth,ci95_low,ci95_high
+GPT5 Autorater - Gemini Response Score,67,45.838414,23.849792,2.913716,5.827432,40.010982,51.665846
+GPT5 Autorater - GPT5 Response Score,67,64.788265,28.836911,3.522989,7.045979,57.742286,71.834244
+➜  Lucius_loss git:(main) ✗ python3 airtable.py
+Airtable stats (view: viwxyetBpKlK14AAs)
+
+Field: GPT5 Autorater - Gemini Response Score
+  n           : 191
+  mean        : 40.813575
+  stdev (ddof=1): 25.848806
+  stderr      : 1.870354
+  95% CI half : 3.665894
+  95% CI low  : 37.147681
+  95% CI high : 44.479469
+
+Field: GPT5 Autorater - GPT5 Response Score
+  n           : 191
+  mean        : 46.128300
+  stdev (ddof=1): 32.668704
+  stderr      : 2.363824
+  95% CI half : 4.633096
+  95% CI low  : 41.495204
+  95% CI high : 50.761396
+
+CSV:field,count,mean,stdev,stderr,ci95_halfwidth,ci95_low,ci95_high
+GPT5 Autorater - Gemini Response Score,191,40.813575,25.848806,1.870354,3.665894,37.147681,44.479469
+GPT5 Autorater - GPT5 Response Score,191,46.128300,32.668704,2.363824,4.633096,41.495204,50.761396
+➜  Lucius_loss git:(main) ✗ python3 airtable.py
+Airtable stats (view: viwFHSBIdstYr9Euw)
+
+Field: GPT5 Autorater - Gemini Response Score
+  n           : 181
+  mean        : 37.982768
+  stdev (ddof=1): 27.081206
+  stderr      : 2.012930
+  95% CI half : 3.945343
+  95% CI low  : 34.037425
+  95% CI high : 41.928112
+
+Field: GPT5 Autorater - GPT5 Response Score
+  n           : 181
+  mean        : 57.949396
+  stdev (ddof=1): 27.496104
+  stderr      : 2.043769
+  95% CI half : 4.005788
+  95% CI low  : 53.943609
+  95% CI high : 61.955184
+
+CSV:field,count,mean,stdev,stderr,ci95_halfwidth,ci95_low,ci95_high
+GPT5 Autorater - Gemini Response Score,181,37.982768,27.081206,2.012930,3.945343,34.037425,41.928112
+GPT5 Autorater - GPT5 Response Score,181,57.949396,27.496104,2.043769,4.005788,53.943609,61.955184
+➜  Lucius_loss git:(main) ✗ python3 plot.py
+Traceback (most recent call last):
+  File "/Users/srujanyamali/Downloads/Mercor/Lucius_loss/plot.py", line 73, in <module>
+    plt.savefig("~/Downloads/loss_analysis_gemini_vs_gpt.png", dpi=200, bbox_inches="tight")
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/matplotlib/pyplot.py", line 1250, in savefig
+    res = fig.savefig(*args, **kwargs)  # type: ignore[func-returns-value]
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/matplotlib/figure.py", line 3490, in savefig
+    self.canvas.print_figure(fname, **kwargs)
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/matplotlib/backend_bases.py", line 2186, in print_figure
+    result = print_method(
+             ^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/matplotlib/backend_bases.py", line 2042, in <lambda>
+    print_method = functools.wraps(meth)(lambda *args, **kwargs: meth(
+                                                                 ^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/matplotlib/backends/backend_agg.py", line 481, in print_png
+    self._print_pil(filename_or_obj, "png", pil_kwargs, metadata)
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/matplotlib/backends/backend_agg.py", line 430, in _print_pil
+    mpl.image.imsave(
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/matplotlib/image.py", line 1657, in imsave
+    image.save(fname, **pil_kwargs)
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/PIL/Image.py", line 2583, in save
+    fp = builtins.open(filename, "w+b")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '~/Downloads/loss_analysis_gemini_vs_gpt.png'
+➜  Lucius_loss git:(main) ✗ python3 plot.py
+➜  Lucius_loss git:(main) ✗ python3 plot.py
+➜  Lucius_loss git:(main) ✗ python3 plot.py
+➜  Lucius_loss git:(main) ✗ script session.log
+
+Script started, output file is session.log
+➜  Lucius_loss git:(main) ✗ 

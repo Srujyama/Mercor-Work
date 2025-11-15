@@ -1,0 +1,67 @@
+➜  ~ cd downlaods
+cd: no such file or directory: downlaods
+➜  ~ cd downloads
+➜  downloads cd mercor
+➜  mercor git:(main) ✗ cd ..
+➜  downloads cd mercor
+➜  mercor cd lucis_loss
+cd: no such file or directory: lucis_loss
+➜  mercor cd lucius_loss
+➜  lucius_loss git:(main) ✗ touch .env
+➜  lucius_loss git:(main) ✗ open -a zed .env
+➜  lucius_loss git:(main) ✗ cd ..
+➜  mercor git:(main) ✗ cd Lucius_anaylsis
+➜  Lucius_anaylsis git:(main) ✗ open -a zed .env
+➜  Lucius_anaylsis git:(main) ✗ cd lucius_loss
+cd: no such file or directory: lucius_loss
+➜  Lucius_anaylsis git:(main) ✗ cd ..
+➜  mercor git:(main) ✗ cd lucius_loss
+
+
+
+
+➜  lucius_loss git:(main) ✗ python3 loss.py
+2025-11-12 19:11:20,844 [INFO] Sample record 0: GEM parsed so far=8, GPT5 parsed so far=8
+2025-11-12 19:11:20,844 [INFO] Sample record 1: GEM parsed so far=12, GPT5 parsed so far=12
+2025-11-12 19:11:21,844 [INFO] [viwFHSBIdstYr9Euw] GEMINI: total=1447, matches=1119 (77.33% if total), mismatches=328 (22.67% if total); GPT5: total=1444, matches=840 (58.17% if total), mismatches=604 (41.83% if total).
+2025-11-12 19:11:21,847 [INFO] Saved CSV -> outputs/autorater_match_summary__viwFHSBIdstYr9Euw.csv
+2025-11-12 19:11:22,093 [INFO] Saved chart -> outputs/autorater_match_chart__viwFHSBIdstYr9Euw.png
+          view_id  records_with_any_summary_field                                  gemini_field  gemini_total_criteria  gemini_matches  gemini_mismatches  gemini_pct_matches  gemini_pct_mismatches  gemini_skipped_missing_keys  gemini_skipped_unparseable_bool                                  gpt5_field  gpt5_total_criteria  gpt5_matches  gpt5_mismatches  gpt5_pct_matches  gpt5_pct_mismatches  gpt5_skipped_missing_keys  gpt5_skipped_unparseable_bool
+viwFHSBIdstYr9Euw                             181 [GPT5 graded] Gemini Response Scoring Summary                   1447            1119                328           77.332412              22.667588                            7                                0 [GPT5 graded] GPT5 Response Scoring Summary                 1444           840              604         58.171745            41.828255                         10                              0
+
+
+➜  lucius_loss git:(main) ✗ python3 loss.py
+2025-11-12 19:13:43,922 [INFO] Sample record 0: GEM parsed so far=12, GPT5 parsed so far=12
+2025-11-12 19:13:43,923 [INFO] Sample record 1: GEM parsed so far=27, GPT5 parsed so far=27
+2025-11-12 19:13:45,054 [INFO] [viwxyetBpKlK14AAs] GEMINI: total=1547, matches=1313 (84.87% if total), mismatches=234 (15.13% if total); GPT5: total=1547, matches=1070 (69.17% if total), mismatches=477 (30.83% if total).
+2025-11-12 19:13:45,058 [INFO] Saved CSV -> outputs/autorater_match_summary__viwxyetBpKlK14AAs.csv
+2025-11-12 19:13:45,246 [INFO] Saved chart -> outputs/autorater_match_chart__viwxyetBpKlK14AAs.png
+          view_id  records_with_any_summary_field                                  gemini_field  gemini_total_criteria  gemini_matches  gemini_mismatches  gemini_pct_matches  gemini_pct_mismatches  gemini_skipped_missing_keys  gemini_skipped_unparseable_bool                                  gpt5_field  gpt5_total_criteria  gpt5_matches  gpt5_mismatches  gpt5_pct_matches  gpt5_pct_mismatches  gpt5_skipped_missing_keys  gpt5_skipped_unparseable_bool
+viwxyetBpKlK14AAs                             191 [GPT5 graded] Gemini Response Scoring Summary                   1547            1313                234            84.87395               15.12605                            0                                0 [GPT5 graded] GPT5 Response Scoring Summary                 1547          1070              477         69.166128            30.833872                          0                              0
+
+➜  lucius_loss git:(main) ✗ python3 loss.py
+2025-11-12 19:14:07,706 [INFO] Sample record 0: GEM parsed so far=14, GPT5 parsed so far=14
+2025-11-12 19:14:07,707 [INFO] Sample record 1: GEM parsed so far=28, GPT5 parsed so far=28
+2025-11-12 19:14:07,737 [INFO] [viwsTeXMlR6jWAF4m] GEMINI: total=642, matches=536 (83.49% if total), mismatches=106 (16.51% if total); GPT5: total=642, matches=425 (66.20% if total), mismatches=217 (33.80% if total).
+2025-11-12 19:14:07,740 [INFO] Saved CSV -> outputs/autorater_match_summary__viwsTeXMlR6jWAF4m.csv
+2025-11-12 19:14:07,921 [INFO] Saved chart -> outputs/autorater_match_chart__viwsTeXMlR6jWAF4m.png
+          view_id  records_with_any_summary_field                                  gemini_field  gemini_total_criteria  gemini_matches  gemini_mismatches  gemini_pct_matches  gemini_pct_mismatches  gemini_skipped_missing_keys  gemini_skipped_unparseable_bool                                  gpt5_field  gpt5_total_criteria  gpt5_matches  gpt5_mismatches  gpt5_pct_matches  gpt5_pct_mismatches  gpt5_skipped_missing_keys  gpt5_skipped_unparseable_bool
+viwsTeXMlR6jWAF4m                              67 [GPT5 graded] Gemini Response Scoring Summary                    642             536                106           83.489097              16.510903                            0                                0 [GPT5 graded] GPT5 Response Scoring Summary                  642           425              217         66.199377            33.800623                          0                              0
+
+
+➜  lucius_loss git:(main) ✗ python3 loss.py
+2025-11-12 19:15:50,446 [INFO] Sample record 0: GEM parsed so far=9, GPT5 parsed so far=9
+2025-11-12 19:15:50,446 [INFO] Sample record 1: GEM parsed so far=22, GPT5 parsed so far=22
+2025-11-12 19:15:50,465 [INFO] [viwcQkSgsonSQBjed] GEMINI: total=466, matches=363 (77.90% if total), mismatches=103 (22.10% if total); GPT5: total=466, matches=280 (60.09% if total), mismatches=186 (39.91% if total).
+2025-11-12 19:15:50,469 [INFO] Saved CSV -> outputs/autorater_match_summary__viwcQkSgsonSQBjed.csv
+2025-11-12 19:15:50,658 [INFO] Saved chart -> outputs/autorater_match_chart__viwcQkSgsonSQBjed.png
+          view_id  records_with_any_summary_field                                  gemini_field  gemini_total_criteria  gemini_matches  gemini_mismatches  gemini_pct_matches  gemini_pct_mismatches  gemini_skipped_missing_keys  gemini_skipped_unparseable_bool                                  gpt5_field  gpt5_total_criteria  gpt5_matches  gpt5_mismatches  gpt5_pct_matches  gpt5_pct_mismatches  gpt5_skipped_missing_keys  gpt5_skipped_unparseable_bool
+viwcQkSgsonSQBjed                              35 [GPT5 graded] Gemini Response Scoring Summary                    466             363                103           77.896996              22.103004                            0                                0 [GPT5 graded] GPT5 Response Scoring Summary                  466           280              186         60.085837            39.914163                          0                              0
+
+
+What different views mean:
+
+viwcQkSgsonSQBjed - IA Rubrics
+viwsTeXMlR6jWAF4m - Text Only
+viwxyetBpKlK14AAs - Image Input
+viwFHSBIdstYr9Euw - Image Output

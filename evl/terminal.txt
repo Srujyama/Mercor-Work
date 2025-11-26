@@ -1,0 +1,1000 @@
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpx/_transports/default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.RemoteProtocolError: Server disconnected without sending a response.
+[GENAI ERROR] attempt 1: Server disconnected without sending a response.
+Traceback (most recent call last):
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpx/_transports/default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpx/_transports/default.py", line 250, in handle_request
+    resp = self._pool.handle_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpcore/_sync/connection_pool.py", line 256, in handle_request
+    raise exc from None
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpcore/_sync/connection_pool.py", line 236, in handle_request
+    response = connection.handle_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpcore/_sync/connection.py", line 103, in handle_request
+    return self._connection.handle_request(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpcore/_sync/http11.py", line 136, in handle_request
+    raise exc
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpcore/_sync/http11.py", line 106, in handle_request
+    ) = self._receive_response_headers(**kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpcore/_sync/http11.py", line 177, in _receive_response_headers
+    event = self._receive_event(timeout=timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpcore/_sync/http11.py", line 231, in _receive_event
+    raise RemoteProtocolError(msg)
+httpcore.RemoteProtocolError: Server disconnected without sending a response.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/srujanyamali/Downloads/evl/evl.py", line 319, in call_gemini
+    resp = client.models.generate_content(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/google/genai/models.py", line 5218, in generate_content
+    response = self._generate_content(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/google/genai/models.py", line 4000, in _generate_content
+    response = self._api_client.request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/google/genai/_api_client.py", line 1388, in request
+    response = self._request(http_request, http_options, stream=False)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/google/genai/_api_client.py", line 1224, in _request
+    return self._retry(self._request_once, http_request, stream)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/tenacity/__init__.py", line 477, in __call__
+    do = self.iter(retry_state=retry_state)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/tenacity/__init__.py", line 378, in iter
+    result = action(retry_state)
+             ^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/tenacity/__init__.py", line 420, in exc_check
+    raise retry_exc.reraise()
+          ^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/tenacity/__init__.py", line 187, in reraise
+    raise self.last_attempt.result()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/concurrent/futures/_base.py", line 449, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/tenacity/__init__.py", line 480, in __call__
+    result = fn(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/google/genai/_api_client.py", line 1194, in _request_once
+    response = self._httpx_client.request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpx/_client.py", line 825, in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpx/_client.py", line 914, in send
+    response = self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpx/_client.py", line 942, in _send_handling_auth
+    response = self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpx/_client.py", line 979, in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpx/_client.py", line 1014, in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpx/_transports/default.py", line 249, in handle_request
+    with map_httpcore_exceptions():
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpx/_transports/default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.RemoteProtocolError: Server disconnected without sending a response.
+[GENAI] Calling generate_content, attempt 2
+[PARTS] Adding file part uri=https://generativelanguage.googleapis.com/v1beta/files/5xk70ezb1tp8, mime=image/png
+[GENAI] Calling generate_content, attempt 2
+[PARTS] Adding file part uri=https://generativelanguage.googleapis.com/v1beta/files/ms96kmlukrvp, mime=application/pdf
+[GENAI] Response model: None
+[CLEANUP] Removed temp file /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_j7hyrnq_.pdf
+Generating (viwK6bco1x5Dw0Opw):  67%|████████████████████████████████████████████████████████████████████████████████████████████████████████▋                                                    | 2/3 [08:45<04:59, 299.18s/task, ✅ recUT1 gen][GENAI ERROR] attempt 2: Server disconnected without sending a response.
+Traceback (most recent call last):
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpx/_transports/default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpx/_transports/default.py", line 250, in handle_request
+    resp = self._pool.handle_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpcore/_sync/connection_pool.py", line 256, in handle_request
+    raise exc from None
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpcore/_sync/connection_pool.py", line 236, in handle_request
+    response = connection.handle_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpcore/_sync/connection.py", line 103, in handle_request
+    return self._connection.handle_request(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpcore/_sync/http11.py", line 136, in handle_request
+    raise exc
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpcore/_sync/http11.py", line 106, in handle_request
+    ) = self._receive_response_headers(**kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpcore/_sync/http11.py", line 177, in _receive_response_headers
+    event = self._receive_event(timeout=timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpcore/_sync/http11.py", line 231, in _receive_event
+    raise RemoteProtocolError(msg)
+httpcore.RemoteProtocolError: Server disconnected without sending a response.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/srujanyamali/Downloads/evl/evl.py", line 319, in call_gemini
+    resp = client.models.generate_content(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/google/genai/models.py", line 5218, in generate_content
+    response = self._generate_content(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/google/genai/models.py", line 4000, in _generate_content
+    response = self._api_client.request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/google/genai/_api_client.py", line 1388, in request
+    response = self._request(http_request, http_options, stream=False)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/google/genai/_api_client.py", line 1224, in _request
+    return self._retry(self._request_once, http_request, stream)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/tenacity/__init__.py", line 477, in __call__
+    do = self.iter(retry_state=retry_state)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/tenacity/__init__.py", line 378, in iter
+    result = action(retry_state)
+             ^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/tenacity/__init__.py", line 420, in exc_check
+    raise retry_exc.reraise()
+          ^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/tenacity/__init__.py", line 187, in reraise
+    raise self.last_attempt.result()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/concurrent/futures/_base.py", line 449, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/tenacity/__init__.py", line 480, in __call__
+    result = fn(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/google/genai/_api_client.py", line 1194, in _request_once
+    response = self._httpx_client.request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpx/_client.py", line 825, in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpx/_client.py", line 914, in send
+    response = self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpx/_client.py", line 942, in _send_handling_auth
+    response = self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpx/_client.py", line 979, in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpx/_client.py", line 1014, in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpx/_transports/default.py", line 249, in handle_request
+    with map_httpcore_exceptions():
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpx/_transports/default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.RemoteProtocolError: Server disconnected without sending a response.
+[GENAI] Calling generate_content, attempt 3
+[PARTS] Adding file part uri=https://generativelanguage.googleapis.com/v1beta/files/5xk70ezb1tp8, mime=image/png
+[GENAI ERROR] attempt 3: Server disconnected without sending a response.
+Traceback (most recent call last):
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpx/_transports/default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpx/_transports/default.py", line 250, in handle_request
+    resp = self._pool.handle_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpcore/_sync/connection_pool.py", line 256, in handle_request
+    raise exc from None
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpcore/_sync/connection_pool.py", line 236, in handle_request
+    response = connection.handle_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpcore/_sync/connection.py", line 103, in handle_request
+    return self._connection.handle_request(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpcore/_sync/http11.py", line 136, in handle_request
+    raise exc
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpcore/_sync/http11.py", line 106, in handle_request
+    ) = self._receive_response_headers(**kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpcore/_sync/http11.py", line 177, in _receive_response_headers
+    event = self._receive_event(timeout=timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpcore/_sync/http11.py", line 231, in _receive_event
+    raise RemoteProtocolError(msg)
+httpcore.RemoteProtocolError: Server disconnected without sending a response.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/srujanyamali/Downloads/evl/evl.py", line 319, in call_gemini
+    resp = client.models.generate_content(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/google/genai/models.py", line 5218, in generate_content
+    response = self._generate_content(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/google/genai/models.py", line 4000, in _generate_content
+    response = self._api_client.request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/google/genai/_api_client.py", line 1388, in request
+    response = self._request(http_request, http_options, stream=False)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/google/genai/_api_client.py", line 1224, in _request
+    return self._retry(self._request_once, http_request, stream)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/tenacity/__init__.py", line 477, in __call__
+    do = self.iter(retry_state=retry_state)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/tenacity/__init__.py", line 378, in iter
+    result = action(retry_state)
+             ^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/tenacity/__init__.py", line 420, in exc_check
+    raise retry_exc.reraise()
+          ^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/tenacity/__init__.py", line 187, in reraise
+    raise self.last_attempt.result()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/concurrent/futures/_base.py", line 449, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/tenacity/__init__.py", line 480, in __call__
+    result = fn(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/google/genai/_api_client.py", line 1194, in _request_once
+    response = self._httpx_client.request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpx/_client.py", line 825, in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpx/_client.py", line 914, in send
+    response = self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpx/_client.py", line 942, in _send_handling_auth
+    response = self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpx/_client.py", line 979, in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpx/_client.py", line 1014, in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpx/_transports/default.py", line 249, in handle_request
+    with map_httpcore_exceptions():
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/site-packages/httpx/_transports/default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.RemoteProtocolError: Server disconnected without sending a response.
+
+[GENERATION ERROR] Future raised exception
+View: viwK6bco1x5Dw0Opw
+Error type: RuntimeError
+Error: Gemini call failed after 3 attempts: Server disconnected without sending a response.
+Traceback (most recent call last):
+  File "/Users/srujanyamali/Downloads/evl/evl.py", line 467, in process_view
+    rec_id, text, served = fut.result()
+                           ^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/concurrent/futures/_base.py", line 449, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+  File "/Users/srujanyamali/.pyenv/versions/3.11.9/lib/python3.11/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/srujanyamali/Downloads/evl/evl.py", line 446, in _gen_task
+    text, served = call_gemini(
+                   ^^^^^^^^^^^^
+  File "/Users/srujanyamali/Downloads/evl/evl.py", line 350, in call_gemini
+    raise RuntimeError(f"Gemini call failed after {max_retries} attempts: {last_err}")
+RuntimeError: Gemini call failed after 3 attempts: Server disconnected without sending a response.
+Generating (viwK6bco1x5Dw0Opw): 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 3/3 [13:42<00:00, 274.08s/task, ❌ gen err]
+Writing (viwK6bco1x5Dw0Opw): 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 3/3 [00:01<00:00,  1.64row/s, ❌ unknow gen_err]
+{
+  "processed": 2,
+  "skipped_no_prompt": 0,
+  "skipped_output_tasks": 141,
+  "already_filled": 168,
+  "errors": 2,
+  "total_seen": 312
+}
+
+=== Processing EVALSET view ===
+
+[VIEW] Listing records for view=viwAby4j1DDolKolH
+[VIEW] Total records in this view: 440
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 4 attachments in Shashaank Run
+[ATTACH] Found 4 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 4 attachments in Shashaank Run
+[ATTACH] Found 4 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 4 attachments in Shashaank Run
+[ATTACH] Found 4 attachments in Shashaank Run
+[ATTACH] Found 3 attachments in Shashaank Run
+[ATTACH] Found 3 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 3 attachments in Shashaank Run
+[ATTACH] Found 3 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 3 attachments in Shashaank Run
+[ATTACH] Found 3 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 3 attachments in Shashaank Run
+[ATTACH] Found 3 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 3 attachments in Shashaank Run
+[ATTACH] Found 3 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 4 attachments in Shashaank Run
+[ATTACH] Found 4 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 5 attachments in Shashaank Run
+[ATTACH] Found 5 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 3 attachments in Shashaank Run
+[ATTACH] Found 3 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 4 attachments in Shashaank Run
+[ATTACH] Found 4 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 3 attachments in Shashaank Run
+[ATTACH] Found 3 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 3 attachments in Shashaank Run
+[ATTACH] Found 3 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 3 attachments in Shashaank Run
+[ATTACH] Found 3 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 2 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[ATTACH] Found 1 attachments in Shashaank Run
+[VIEW] Jobs to run: 261, already_filled=0, skipped_no_prompt=0, skipped_output_tasks=179
+[TASK] Starting task for record recoJYSg2nG7eyVvY
+[DOWNLOAD] Fetching Financial Ratios Assignment (4).pdf from https://v5.airtableusercontent.com/v3/u/47/47/1764144000000/YcL9mdoOvh7lxRfmVv1s5A/n4hpMf8Knf1Kklgk5VU1Tg8wtfy99IWyarRFw-WbzDZtaDRK3bCdqxHMxsHTaQGnTrIPFQTV1_gfZSUM5glSRp95-48_HQPtzVmPJlAjOK9zcdzHBG8LNZ09wYZWRs4RR7PzJfBldWDmhyc07xBKSAPJbdusLXVFlzS-LbBVKjpZKeBHI9t5LlNzqvmnJzUL/nVK2u3KGmb0yu63kuraYXtEhAioQI8jN0AiLatWLykU
+[TASK] Starting task for record recvcvqH0BNlQcBjM
+[DOWNLOAD] Fetching APChemFRQNumber5.pdf from https://v5.airtableusercontent.com/v3/u/47/47/1764144000000/FovhRis_U-ipIsYc145Heg/REKH9_os8RvBhz5ZHApwT1agNzfpMSQxVf_K3BE4Cc-6TfRr0nEUb85Bdx-pisOQjYb9RYM-adUS0J-CtathupLOlDWQI2Qo85PocOBHwwz1LXO08oY4YnUur3qWGuBXzq-pikfwkPSJ5Ijy41V3lbMOUTO0C2BIXBP8Gla86Z8/gnJvCfBGm9jUB9nWoR83rQLXwyT7-7Bj-85pvEughw8
+[TASK] Starting task for record recAZ5D7Ep7K1q7s3
+[GENAI] Calling generate_content, attempt 1
+[TASK] Starting task for record rec89kJ6VUY8DL6nZ
+[DOWNLOAD] Fetching All Methods Factoring Practice.pdf from https://v5.airtableusercontent.com/v3/u/47/47/1764144000000/0mg7PFefp2cpnGi1e36hLA/C1FCVu3k7INyOUzEkAMGqZXsUnhjEMnvtCGRUUGDtDRUho5pjanaFHOMalWBFXz1OHTdzt_Nrfqe4lz82-6NJzVMbNTVG52VdvSEHxNZQ5X-gEGDtXv4eOD7qk9b8RJoHf1TrBgbN6pULZeBtLnBk61VgEj2Q2YqWHeiL0AX1iDBgad2Kgf9I6Ja1aLP85J3/N6OCG9hGaM_cxGXbPNKB7rhXIt9PtZOYlZT57vJpOVU
+[TASK] Starting task for record recwbsUg1RqWyaxKX
+[DOWNLOAD] Fetching 2025-26-US-Planner-WEB.pdf from https://v5.airtableusercontent.com/v3/u/47/47/1764144000000/XuViKkiDS4zEW8nny0fKlQ/zTNo4USUkD0fSixFWE2XWBOVczkIvxxVLyfgEOImLjVJsbtEOCBqopZ3Zck7DNn_Ncv3KaKpxRvj_4WbS_ucrkEXEhdAaVeo9-9LGp0yA6DXWyRY3ZJpz3XBfv9sMck_C4qsB0g6htH9PDOXdpYeCTfqecUpaV6s7IBpMfG9JUEINP7luvyP2xyyYRlIc2fG/l8pkH-6B-yqmyk-rHiv-mKLOojI2zXCN5IrTo6sg2-I
+[TASK] Starting task for record recz4o01YgaDVfUKd
+[GENAI] Calling generate_content, attempt 1
+[TASK] Starting task for record recQjlOPIGtFr88Wg
+[DOWNLOAD] Fetching Expo Quiz (6).pdf from https://v5.airtableusercontent.com/v3/u/47/47/1764144000000/BPrupkpBUS7_ritxZ2mdWA/JW0WqY7CTxvub3wXbdhmRFpFW8R6hKOuPvjewXBfjGoOSwgBUf66IVIfAxvs4FbP7LYbTW3jgE-l6qV5SR-sjRsdnkNVxFavihGFLM4Qmniiu4rYHytLyVAoYsUsBiN_sHXiveBJkLfWy6f2rspIp7C2xyKXWxDeex6Y--s0GJs/8JpIZ0YcRM7EKOmCFAk2_puKieuyQVsuZjX_6pth3cE
+[TASK] Starting task for record recsl7I2UJRsVjSUx
+[TASK] Starting task for record recB4zw29Rl2SSpwY
+[GENAI] Calling generate_content, attempt 1
+[TASK] Starting task for record recnnNfiNAexz2kco
+[GENAI] Calling generate_content, attempt 1
+[GENAI] Calling generate_content, attempt 1
+[TASK] Starting task for record recBVoXbhzHuwGf3L
+[TASK] Starting task for record reckCTNyDpvcXN001
+[GENAI] Calling generate_content, attempt 1
+Generating (viwAby4j1DDolKolH):   0%|                                                                                                                                                                                   | 0/261 [00:00<?, ?task/s][GENAI] Calling generate_content, attempt 1
+[DOWNLOAD] Saved All Methods Factoring Practice.pdf to /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_mvx1ti2s.pdf (131567 bytes)
+[DOWNLOAD] Saved APChemFRQNumber5.pdf to /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_3nq_l0u1.pdf (78263 bytes)
+[UPLOAD] Uploading /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_3nq_l0u1.pdf (mime=application/pdf) to Gemini
+[UPLOAD] Uploading /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_mvx1ti2s.pdf (mime=application/pdf) to Gemini
+[DOWNLOAD] Saved Expo Quiz (6).pdf to /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_caramgon.pdf (56436 bytes)
+[UPLOAD] Uploading /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_caramgon.pdf (mime=application/pdf) to Gemini
+[DOWNLOAD] Saved Financial Ratios Assignment (4).pdf to /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_yb3dsl8w.pdf (56778 bytes)
+[DOWNLOAD] Fetching Crocs2024.pdf from https://v5.airtableusercontent.com/v3/u/47/47/1764144000000/6VRgaH8a1MwDuNnuo8Dlmw/x43EzCJXBfAMLewFOS5Zsw44-fQnalkZQ3C6A66RC8PjXcoCfTqxXvF0aYzly1EnQy--xjcXMQcrqYwez48jctEfW3QFfa2IoAb2oBtHWpDQF0LFTvME6I8sCDrlAH4ncAEBFNvb0vo5-kgDsSwvwMpcOrwRIVUNbsLoV5pADw4/IqjoHY_mWoUGXt2o5Cln8fZg70BDsXW84nzzqJ8-s3w
+[DOWNLOAD] Saved 2025-26-US-Planner-WEB.pdf to /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_h17zy6ue.pdf (3337804 bytes)
+[UPLOAD] Uploading /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_h17zy6ue.pdf (mime=application/pdf) to Gemini
+[DOWNLOAD] Saved Crocs2024.pdf to /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_jl3h6zgh.pdf (238575 bytes)
+[UPLOAD] Uploading /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_yb3dsl8w.pdf (mime=application/pdf) to Gemini
+[UPLOAD] Uploaded file uri=https://generativelanguage.googleapis.com/v1beta/files/lworme7i32qs, name=files/lworme7i32qs
+[GENAI] Calling generate_content, attempt 1
+[PARTS] Adding file part uri=https://generativelanguage.googleapis.com/v1beta/files/lworme7i32qs, mime=application/pdf
+[UPLOAD] Uploaded file uri=https://generativelanguage.googleapis.com/v1beta/files/s4jlnuefa9ez, name=files/s4jlnuefa9ez
+[GENAI] Calling generate_content, attempt 1
+[PARTS] Adding file part uri=https://generativelanguage.googleapis.com/v1beta/files/s4jlnuefa9ez, mime=application/pdf
+[UPLOAD] Uploaded file uri=https://generativelanguage.googleapis.com/v1beta/files/c3wticcgreal, name=files/c3wticcgreal
+[GENAI] Calling generate_content, attempt 1
+[PARTS] Adding file part uri=https://generativelanguage.googleapis.com/v1beta/files/c3wticcgreal, mime=application/pdf
+[UPLOAD] Uploaded file uri=https://generativelanguage.googleapis.com/v1beta/files/wx5u8nu43xtz, name=files/wx5u8nu43xtz
+[UPLOAD] Uploading /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_jl3h6zgh.pdf (mime=application/pdf) to Gemini
+[UPLOAD] Uploaded file uri=https://generativelanguage.googleapis.com/v1beta/files/m84844q8aqry, name=files/m84844q8aqry
+[GENAI] Calling generate_content, attempt 1
+[PARTS] Adding file part uri=https://generativelanguage.googleapis.com/v1beta/files/m84844q8aqry, mime=application/pdf
+[UPLOAD] Uploaded file uri=https://generativelanguage.googleapis.com/v1beta/files/ijvidquudv4y, name=files/ijvidquudv4y
+[GENAI] Calling generate_content, attempt 1
+[PARTS] Adding file part uri=https://generativelanguage.googleapis.com/v1beta/files/wx5u8nu43xtz, mime=application/pdf
+[PARTS] Adding file part uri=https://generativelanguage.googleapis.com/v1beta/files/ijvidquudv4y, mime=application/pdf
+[GENAI] Response model: None
+[TASK] Starting task for record rect9kMw0nvPWPU7A
+[DOWNLOAD] Fetching Blackstone_Group__Dry_Powder_in_an_LBO_Drought__A_.pdf from https://v5.airtableusercontent.com/v3/u/47/47/1764144000000/jT_pKuwMAfS_CYnoxQaXjQ/IaULZ01GSaRfS2ojSlGxvQLCJwnbi7_jvRIajl7c6cpErdKuZgvWVAY0-T1GErI_1hXvBISHj2I4z8ruhEjA6IFdwOU8HF4MYk3PQy_2c5cBDAVBiqyQr4iv2hWDNCGMKDHBR3nUQI8fzD2xk-VnsInhNTpELbiX3Ra3kPZle3E66tY5-xUHXADcANYTNoSEwiDuOGBHSAnKEaPZLzoLaQ/TJgkPJxybb6WofG6jn7jm-ZTTaNCWyjuAIH24j2W6gM
+Generating (viwAby4j1DDolKolH):   0%|▌                                                                                                                                                           | 1/261 [00:10<46:33, 10.74s/task, ✅ recsl7 gen][DOWNLOAD] Saved Blackstone_Group__Dry_Powder_in_an_LBO_Drought__A_.pdf to /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_bfpn2pt6.pdf (402289 bytes)
+[UPLOAD] Uploading /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_bfpn2pt6.pdf (mime=application/pdf) to Gemini
+[UPLOAD] Uploaded file uri=https://generativelanguage.googleapis.com/v1beta/files/lz4sine49hrp, name=files/lz4sine49hrp
+[GENAI] Calling generate_content, attempt 1
+[PARTS] Adding file part uri=https://generativelanguage.googleapis.com/v1beta/files/lz4sine49hrp, mime=application/pdf
+[GENAI] Response model: None
+[TASK] Starting task for record recuM9rEFL5zubbFH
+[DOWNLOAD] Fetching Function Graph Notes.pdf from https://v5.airtableusercontent.com/v3/u/47/47/1764144000000/_3AW3fM3caotZSqNSYDyTQ/9abAuLwU7n5jpNLiKB8gujPq_V_zyOb81MANlFi5qvdX1Wi8ztjChZL73Ent2xdXPCobrhpE_rZ0s3MIOSaaXtyuFtyDYVmjHFJB1N7lNwFqJqi3P3LISfZ7hv2OPtrO84zL2c2HeYUhhJOq4cGNQ9IuyoiHZZ5gCh2LZEQN1lI/py_uNwp2JGEZSQLjboEY9LPNKg3X8BRkrlcZtjD9uYY
+Generating (viwAby4j1DDolKolH):   1%|█▏                                                                                                                                                          | 2/261 [00:14<28:41,  6.65s/task, ✅ recBVo gen][DOWNLOAD] Saved Function Graph Notes.pdf to /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_rdutmbye.pdf (949291 bytes)
+[UPLOAD] Uploading /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_rdutmbye.pdf (mime=application/pdf) to Gemini
+[UPLOAD] Uploaded file uri=https://generativelanguage.googleapis.com/v1beta/files/dj4dlw629nid, name=files/dj4dlw629nid
+[GENAI] Calling generate_content, attempt 1
+[PARTS] Adding file part uri=https://generativelanguage.googleapis.com/v1beta/files/dj4dlw629nid, mime=application/pdf
+[GENAI] Response model: None
+[TASK] Starting task for record recZZk3c8hfCDsRGz
+[DOWNLOAD] Fetching IMFMatchingActivity.docx.pdf from https://v5.airtableusercontent.com/v3/u/47/47/1764144000000/-YXDIBIU34zGIbpNWXcNpA/cTDQtkZXnfX5ya572creX0db7aXJMDZN_R_rR78PUW9ANCmnrnUt7aHIL529g0slUWwW_3TybcWHL3emDCV8Fye1sAa-mcilT0AmiQR4caV0XmJIaNT3GkRM1LkDDO_9NNwE034RBZugqL19AEi6EaE8aQg5od7enNth5WbvJmBxNp59_ri3qUatth9Oqobp/6LNO8tXwTcCE-cx1VTszprhbq1-Dw2hnt1EMuhGP5VI
+Generating (viwAby4j1DDolKolH):   1%|█▊                                                                                                                                                          | 3/261 [00:17<21:14,  4.94s/task, ✅ recnnN gen][DOWNLOAD] Saved IMFMatchingActivity.docx.pdf to /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_zftcmrcq.pdf (258226 bytes)
+[UPLOAD] Uploading /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_zftcmrcq.pdf (mime=application/pdf) to Gemini
+[UPLOAD] Uploaded file uri=https://generativelanguage.googleapis.com/v1beta/files/4y33ixmuh1br, name=files/4y33ixmuh1br
+[GENAI] Calling generate_content, attempt 1
+[PARTS] Adding file part uri=https://generativelanguage.googleapis.com/v1beta/files/4y33ixmuh1br, mime=application/pdf
+[GENAI] Response model: None
+[TASK] Starting task for record recjMQpuKh5oLeoOt
+[DOWNLOAD] Fetching Microplastic.pdf from https://v5.airtableusercontent.com/v3/u/47/47/1764144000000/vd_VcZUjxPr-XwEj6cbycg/diyIRegcgey_PfPkiCrBBytdqaB4jkC9HENh_fxzjvKSOhLRQ1s94XrEdRvwElf5CW-KG_pNwpGLRvjtpTgpsxF2HKOzD-2m8AuNSPL0srnUzbAMkPew-rsweF2GS5IiOhak1Bq7Dj2f3uw4ncNBEKisJGOfTTvSbuHblfIrFKk/dE4sxNVwWZNI6MxAwi8s_gxkIZSxCuRlyH9TTmHG0QM
+Generating (viwAby4j1DDolKolH):   2%|██▍                                                                                                                                                         | 4/261 [00:23<22:48,  5.33s/task, ✅ recz4o gen][DOWNLOAD] Saved Microplastic.pdf to /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_7q51wgt1.pdf (51482 bytes)
+[UPLOAD] Uploading /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_7q51wgt1.pdf (mime=application/pdf) to Gemini
+[UPLOAD] Uploaded file uri=https://generativelanguage.googleapis.com/v1beta/files/6y9onc9te21o, name=files/6y9onc9te21o
+[GENAI] Calling generate_content, attempt 1
+[PARTS] Adding file part uri=https://generativelanguage.googleapis.com/v1beta/files/6y9onc9te21o, mime=application/pdf
+[GENAI] Response model: None
+[TASK] Starting task for record reciaRdMxgEMkpn5Z
+[GENAI] Calling generate_content, attempt 1
+Generating (viwAby4j1DDolKolH):   2%|██▉                                                                                                                                                         | 5/261 [00:30<25:41,  6.02s/task, ✅ recAZ5 gen][GENAI] Response model: None
+[CLEANUP] Removed temp file /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_mvx1ti2s.pdf
+[TASK] Starting task for record recAH7eyjeqjDziw7
+[DOWNLOAD] Fetching The Nonuser Celebrity Endorser.pdf from https://v5.airtableusercontent.com/v3/u/47/47/1764144000000/76W-7vrYImRIuaKdwQHVww/l0UU762sTVZH95pU6WcibAMgWmYoo7Hpb_pUCqNyETs8Dp0vv-GeojrilfRST4i8M1Atpqswirrqh_vABEQWjEcI-ryGPAabdCaZYsaDFTia6C0bOfxxrKJeLKncE86XJpYf0kzd0bK6C2q_7fVfIWIim6VvKyX7zYUVZsrqF31gflKPeGQB0edE2NdvQ705/Kad7dNUBdexk1XGrjk4RbDD7vULRN9j1FpSVAnMcvMo
+Generating (viwAby4j1DDolKolH):   2%|██▉                                                                                                                                                         | 5/261 [00:30<25:41,  6.02s/task, ✅ rec89k gen][DOWNLOAD] Saved The Nonuser Celebrity Endorser.pdf to /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_xalqca5w.pdf (21604 bytes)
+[UPLOAD] Uploading /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_xalqca5w.pdf (mime=application/pdf) to Gemini
+[GENAI] Response model: None
+[TASK] Starting task for record rec49naAKeiE7BA8Y
+[DOWNLOAD] Fetching Admissions UC Berkeley Economics.pdf from https://v5.airtableusercontent.com/v3/u/47/47/1764144000000/_CZ8XFDbAfwxlYHrp5QWqA/CzM0naG09mV0MX34v0nTrHLjCGW2yJ_jCZXlDcfHbzXKZFgsvHxWx_NGU9mo6E8i-GarUcc3M5g2dZCK0TTLhU77gR5YqDTcSq3mVd6UohQIRUTHgLllrOz1dSH5F0yP6fHvYELzgextHi-Weyy4k67MIugflI4AdxEiMda0nFivUFqrRY4iYVFaMgNFPbn4/cx30j462MJUPI4k03YNvx-uPyB8gFeyc-6HSmPnbzBU
+Generating (viwAby4j1DDolKolH):   3%|████▏                                                                                                                                                       | 7/261 [00:32<14:38,  3.46s/task, ✅ recB4z gen][UPLOAD] Uploaded file uri=https://generativelanguage.googleapis.com/v1beta/files/ppz4jhv2gs7p, name=files/ppz4jhv2gs7p
+[GENAI] Calling generate_content, attempt 1
+[PARTS] Adding file part uri=https://generativelanguage.googleapis.com/v1beta/files/ppz4jhv2gs7p, mime=application/pdf
+[DOWNLOAD] Saved Admissions UC Berkeley Economics.pdf to /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_55c3wgux.pdf (760245 bytes)
+[DOWNLOAD] Fetching Freshmen Information UC Berkeley Economics.pdf from https://v5.airtableusercontent.com/v3/u/47/47/1764144000000/OR1NIqT6O05bbJkplTuZTA/IMyqMHWKIYI6h69KIEPSzSAxfbaRbC5IEZsdb_Qw1rxdyaBX1nGRuSBlluNiu3hdkWVrQ-u5C0a2AuF1v1qjJoIAdjchTYgSvqh7q8BSIvy2XCu-efpuyjzREw6s5Th5uKIi8q__TwY8SsSdiDxyAIeZNjtyguN_QFT6vqckbUVO6ZxKIy9hiEkGkHH9GpbCshY5sleuQs9y9C1TOX-MRQ/7r8YjwWLwpzL6y6if6Pmxj9LtLOXxZC53GTE5XzBNPA
+[DOWNLOAD] Saved Freshmen Information UC Berkeley Economics.pdf to /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_5uajko46.pdf (683043 bytes)
+[UPLOAD] Uploading /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_55c3wgux.pdf (mime=application/pdf) to Gemini
+[GENAI] Response model: None
+[CLEANUP] Removed temp file /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_yb3dsl8w.pdf
+[CLEANUP] Removed temp file /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_jl3h6zgh.pdf
+[TASK] Starting task for record recLv9L2CumaNaOdZ
+[DOWNLOAD] Fetching f, f', f'' (2).pdf from https://v5.airtableusercontent.com/v3/u/47/47/1764144000000/zub4Ltai3y26nLMkxObozQ/SbW6A0gPFlVtRigeeNGGP-v9L5CBd2ekqwEYxykoM8kWTZemKeCdHAnEG6sahQUhlkDd963eE704AhzT5IBchheasN7bd8ZMxen-rSBZwXJkrd6dMhgDIVd9fI2M7jqJX7q00W2JebPyQCQLKfzRYA/8PJ-JfVSFFmFxTa-Cy3Ew8xUWgMJfSWSgP1vjpY9eIo
+Generating (viwAby4j1DDolKolH):   3%|████▊                                                                                                                                                       | 8/261 [00:34<12:37,  2.99s/task, ✅ recoJY gen][DOWNLOAD] Saved f, f', f'' (2).pdf to /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_6m6rdjgf.pdf (117473 bytes)
+[UPLOAD] Uploading /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_6m6rdjgf.pdf (mime=application/pdf) to Gemini
+[UPLOAD] Uploaded file uri=https://generativelanguage.googleapis.com/v1beta/files/3ecb40akx0n6, name=files/3ecb40akx0n6
+[UPLOAD] Uploading /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_5uajko46.pdf (mime=application/pdf) to Gemini
+[UPLOAD] Uploaded file uri=https://generativelanguage.googleapis.com/v1beta/files/7lckx3hujxbq, name=files/7lckx3hujxbq
+[GENAI] Calling generate_content, attempt 1
+[PARTS] Adding file part uri=https://generativelanguage.googleapis.com/v1beta/files/7lckx3hujxbq, mime=application/pdf
+[UPLOAD] Uploaded file uri=https://generativelanguage.googleapis.com/v1beta/files/jpk7htf32y2r, name=files/jpk7htf32y2r
+[GENAI] Calling generate_content, attempt 1
+[PARTS] Adding file part uri=https://generativelanguage.googleapis.com/v1beta/files/3ecb40akx0n6, mime=application/pdf
+[PARTS] Adding file part uri=https://generativelanguage.googleapis.com/v1beta/files/jpk7htf32y2r, mime=application/pdf
+[GENAI] Response model: None
+[CLEANUP] Removed temp file /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_h17zy6ue.pdf
+[TASK] Starting task for record reccq9LbXEO42F3Hw
+Generating (viwAby4j1DDolKolH):   3%|█████▍                                                                                                                                                      | 9/261 [00:36<12:04,  2.88s/task, ✅ recwbs gen][DOWNLOAD] Fetching Exercises_LogarithmicFunction.pdf from https://v5.airtableusercontent.com/v3/u/47/47/1764144000000/5B1-dSRtEauwJdM57pDTlA/paEIgW0VKcL2MypC0delKHRmQdT_nH_vYS2JhQpRS1lm1lgYKUfg2zjeN9N6NpzTmcoUZ-mLi7U7lqHxToOnDSjhSae5Mi_x7lLAF_rPVRjr8zxYn4-zgNsxVskZ_YJ2ibzHLfEaPm1eUtxuIBjNepbM1lk15cq0t_TKaId7n94G3ZW06KEAD14zD0xZuyKk/NL6frjWKB71uzqe1xzHA_yPHbGUtY-lSsx1P8zeUm-8
+[DOWNLOAD] Saved Exercises_LogarithmicFunction.pdf to /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_jtfoffbd.pdf (233499 bytes)
+[UPLOAD] Uploading /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_jtfoffbd.pdf (mime=application/pdf) to Gemini
+[GENAI] Response model: None
+[CLEANUP] Removed temp file /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_3nq_l0u1.pdf
+[TASK] Starting task for record rec51ScZtQbEmvjwc
+[GENAI] Calling generate_content, attempt 1
+Generating (viwAby4j1DDolKolH):   4%|█████▉                                                                                                                                                     | 10/261 [00:37<09:42,  2.32s/task, ✅ recvcv gen][UPLOAD] Uploaded file uri=https://generativelanguage.googleapis.com/v1beta/files/bmknhwvh6xdv, name=files/bmknhwvh6xdv
+[GENAI] Calling generate_content, attempt 1
+[PARTS] Adding file part uri=https://generativelanguage.googleapis.com/v1beta/files/bmknhwvh6xdv, mime=application/pdf
+[GENAI] Response model: None
+[TASK] Starting task for record recN7JVOXoiUkDWVh
+[DOWNLOAD] Fetching Chem Paper.pdf from https://v5.airtableusercontent.com/v3/u/47/47/1764144000000/GM-61pxcYo_q7OK3kIUekA/7jK8KUyyONh8eATSsi-rrErBdXZI9cBlcRUkBTnBpYReejGxuD4yh5SuP2IBzh--LV72gYlHur2NDe6qtASpq14sazFjDXnkjHh4DYnHDKdHx9bWV4h5QZMqd4tai5Uz6QL9J8M3MyHu-YMeHltgwIcHISg-VbI1mHcH-sKOEFM/hPz8OoB51mIrYrPhdkCRVri4u6ndtD6GR1oO1a1JjnQ
+Generating (viwAby4j1DDolKolH):   4%|██████▌                                                                                                                                                    | 11/261 [00:41<11:55,  2.86s/task, ✅ reckCT gen][DOWNLOAD] Saved Chem Paper.pdf to /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_07ryifnt.pdf (873261 bytes)
+[UPLOAD] Uploading /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_07ryifnt.pdf (mime=application/pdf) to Gemini
+[GENAI] Response model: None
+[CLEANUP] Removed temp file /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_zftcmrcq.pdf
+[TASK] Starting task for record recHbqiQmM3rDHZSB
+[DOWNLOAD] Fetching venn.pdf from https://v5.airtableusercontent.com/v3/u/47/47/1764144000000/o-rt78Re9TfR34Mm4KSe-A/cfylspVJjSh_p7i_dIWWHYh3p01XQuDpsTBrUx7Yi2fbhrs99ahFyz_yRIPKiOqnYN4vJHqb3mPL503fHxDWVXq43ieYKTURkSvqdyvPULFzz06j6ZU5X-Q5jwimxguAmA3bPxfSWw6a6kIGBuG2Ow/5T-PAOw1BFGTa_wBRx4W8_Qhv3qaQKeeL0yRZDBmA3I
+Generating (viwAby4j1DDolKolH):   5%|███████▏                                                                                                                                                   | 12/261 [00:42<09:31,  2.29s/task, ✅ recZZk gen][DOWNLOAD] Saved venn.pdf to /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_am293ovf.pdf (51194 bytes)
+[UPLOAD] Uploading /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_am293ovf.pdf (mime=application/pdf) to Gemini
+[GENAI] Response model: None
+[CLEANUP] Removed temp file /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_caramgon.pdf
+[TASK] Starting task for record recB4byfl0wgGmgDb
+[DOWNLOAD] Fetching CBC article.pdf from https://v5.airtableusercontent.com/v3/u/47/47/1764144000000/9xMclKcOhopv6QWRDwFrmA/HlXTxAHYzPYHak0JkaFw1WjsrICHnf7cEG-Hme5zmfBZkVCf61J0EXcwk4QupFsClb3LszVO8rdoW_ncfGYfbvBQe5JInN55rgAOoWi_6N3A7taXlHt_A-jQJvyKkYaiVpPcm06YzhuyACnzjkHjCajLe3ZFYIsVc8eDcEbFv8M/mFFEHGBmb16-YnscoxaXB2InBN9PnKzw_6ujNsnyac4
+Generating (viwAby4j1DDolKolH):   5%|███████▋                                                                                                                                                   | 13/261 [00:43<07:31,  1.82s/task, ✅ recQjl gen][DOWNLOAD] Saved CBC article.pdf to /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_1nvyu648.pdf (57410 bytes)
+[UPLOAD] Uploading /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_1nvyu648.pdf (mime=application/pdf) to Gemini
+[UPLOAD] Uploaded file uri=https://generativelanguage.googleapis.com/v1beta/files/39ix4h6o2qf6, name=files/39ix4h6o2qf6
+[GENAI] Calling generate_content, attempt 1
+[PARTS] Adding file part uri=https://generativelanguage.googleapis.com/v1beta/files/39ix4h6o2qf6, mime=application/pdf
+[UPLOAD] Uploaded file uri=https://generativelanguage.googleapis.com/v1beta/files/w9v1a1p0zrcd, name=files/w9v1a1p0zrcd
+[GENAI] Calling generate_content, attempt 1
+[PARTS] Adding file part uri=https://generativelanguage.googleapis.com/v1beta/files/w9v1a1p0zrcd, mime=application/pdf
+[UPLOAD] Uploaded file uri=https://generativelanguage.googleapis.com/v1beta/files/5izbvky6sjkk, name=files/5izbvky6sjkk
+[GENAI] Calling generate_content, attempt 1
+[PARTS] Adding file part uri=https://generativelanguage.googleapis.com/v1beta/files/5izbvky6sjkk, mime=application/pdf
+[GENAI] Response model: None
+[TASK] Starting task for record rec2mNtOJKJcd4LLp
+[DOWNLOAD] Fetching Derivatives Using Technology.pdf from https://v5.airtableusercontent.com/v3/u/47/47/1764144000000/fTzub7f7AJTkL8HDWkPTVQ/E0CVeP2M3bsZST3YDa1eVmx1D4nX6RBpSq2QhBPeT4IN1VKesA22IUkLLI1KySLs-OEQjYYsyI8G4qLsZwnIbtyYgbtnUMYnRK8RIc4z_JYQgV6c4gWPSuxvwrBkJO50tDHZ4gIxIwlx7Orw8cLMkCOuJpA8KBqH1YCqhb2oB031sUA-fkHQ2u7jjqPzAZ7K/Smb06OmpvSG5d5BU_uZuDpfpuxE6n47V1UrqrJK1cBk
+Generating (viwAby4j1DDolKolH):   5%|████████▎                                                                                                                                                  | 14/261 [00:53<16:51,  4.10s/task, ✅ rec51S gen][DOWNLOAD] Saved Derivatives Using Technology.pdf to /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_3ccewpa3.pdf (150059 bytes)
+[UPLOAD] Uploading /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_3ccewpa3.pdf (mime=application/pdf) to Gemini
+[UPLOAD] Uploaded file uri=https://generativelanguage.googleapis.com/v1beta/files/fy6im67jkmto, name=files/fy6im67jkmto
+[GENAI] Calling generate_content, attempt 1
+[PARTS] Adding file part uri=https://generativelanguage.googleapis.com/v1beta/files/fy6im67jkmto, mime=application/pdf
+[GENAI] Response model: None
+[CLEANUP] Removed temp file /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_6m6rdjgf.pdf
+[TASK] Starting task for record recSX2wz4cXzN0xki
+[DOWNLOAD] Fetching PA028a-Order-of-Operations-Challenge-Problems.pdf from https://v5.airtableusercontent.com/v3/u/47/47/1764144000000/w3WnvR1-toKQWX8X-DNSuA/zJ6EEj6Di_RUl1KhIeQGEKe6czDy-KXBi7t1Ct1CCuzyh3ZCwgTPw9-IzWBKcTondRj1QdEOWZqF9YQiDfI3UQ-8S2NWUYQ29VKRpt7m1WYCl6tqgUGJAuyingzqflncBZUJ65uAMexwE31ZbovHyOiA2iBFEMpz6hdBEJfel5pmhLyOPQEdr4GAtaJDB2xAeF_GI6K7nlZ1zDug1rJdiQ/oCg34FtdTSbEImX1rTOGolUZ9qn66Gz2uA3E6O1bb5o
+Generating (viwAby4j1DDolKolH):   6%|████████▉                                                                                                                                                  | 15/261 [00:56<16:16,  3.97s/task, ✅ recLv9 gen][DOWNLOAD] Saved PA028a-Order-of-Operations-Challenge-Problems.pdf to /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_pcf92p2v.pdf (1091949 bytes)
+[UPLOAD] Uploading /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_pcf92p2v.pdf (mime=application/pdf) to Gemini
+[GENAI] Response model: None
+[TASK] Starting task for record receivXKwYp78ivKW
+[DOWNLOAD] Fetching Sudoku puzzle .pdf from https://v5.airtableusercontent.com/v3/u/47/47/1764144000000/L1WR54CrehKoZySeoSVXGg/99uK0lXeYo4dx02HpF9zawYJybyYBWrHTG-ClxVcvftFu9KZuJryo9xICWsVUxBYFS-4OmGWYri7Q0SRpN5wYQ74viMK5M5Dm8r3UDWqdWtqFQTCM5gxfjQmdV6ByP5yshBfCCSGskmhKV4BJ4tMzTPaBNPj9Hoe_bf3y9GqbaM/evtnNMR5RTyo4i875CFN1K_kt9WQiRwUdgM0vK44H1E
+Generating (viwAby4j1DDolKolH):   6%|█████████▌                                                                                                                                                 | 16/261 [00:58<13:17,  3.25s/task, ✅ reciaR gen][DOWNLOAD] Saved Sudoku puzzle .pdf to /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_3vwuw1h1.pdf (76324 bytes)
+[DOWNLOAD] Fetching Sudoku grid.pdf from https://v5.airtableusercontent.com/v3/u/47/47/1764144000000/L9UEeMW7N4TwFui7JUP3Lg/JVVob55cAm8Z7PqitWRC1YylheM3q78ttdBjMj__QaQhtAdXAVrDj0O-HRlDTqlsMSk2-ArfoGjJGqcpiPO-1M-SRPglyud81DtSKwBSb9Qx4twiljLphKsp2LVzh0eG04CUDjzKE8zWd71PrS_fS1A4dk_yOqIFsFNVMtNw2VU/XXxxXyHZRHHIVy0Y0ouIU119mQyZqAgAVdQTATuDL5k
+[DOWNLOAD] Saved Sudoku grid.pdf to /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_bk1_hsiu.pdf (360164 bytes)
+[UPLOAD] Uploading /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_3vwuw1h1.pdf (mime=application/pdf) to Gemini
+[UPLOAD] Uploaded file uri=https://generativelanguage.googleapis.com/v1beta/files/v46jupnxk2pu, name=files/v46jupnxk2pu
+[GENAI] Calling generate_content, attempt 1
+[PARTS] Adding file part uri=https://generativelanguage.googleapis.com/v1beta/files/v46jupnxk2pu, mime=application/pdf
+[UPLOAD] Uploaded file uri=https://generativelanguage.googleapis.com/v1beta/files/fdn0xtnmnnq9, name=files/fdn0xtnmnnq9
+[UPLOAD] Uploading /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_bk1_hsiu.pdf (mime=application/pdf) to Gemini
+[UPLOAD] Uploaded file uri=https://generativelanguage.googleapis.com/v1beta/files/9j4em2ieessr, name=files/9j4em2ieessr
+[GENAI] Calling generate_content, attempt 1
+[PARTS] Adding file part uri=https://generativelanguage.googleapis.com/v1beta/files/fdn0xtnmnnq9, mime=application/pdf
+[PARTS] Adding file part uri=https://generativelanguage.googleapis.com/v1beta/files/9j4em2ieessr, mime=application/pdf
+[GENAI] Response model: None
+[CLEANUP] Removed temp file /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_rdutmbye.pdf
+[TASK] Starting task for record recK3GGKT2Pk7aHRR
+[GENAI] Calling generate_content, attempt 1
+Generating (viwAby4j1DDolKolH):   7%|██████████                                                                                                                                                 | 17/261 [01:01<13:19,  3.28s/task, ✅ recuM9 gen][GENAI] Response model: None
+[CLEANUP] Removed temp file /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_xalqca5w.pdf
+[TASK] Starting task for record recgF0vJQqb80lfZB
+[GENAI] Calling generate_content, attempt 1
+Generating (viwAby4j1DDolKolH):   7%|██████████▋                                                                                                                                                | 18/261 [01:02<09:56,  2.45s/task, ✅ recAH7 gen][GENAI] Response model: None
+[CLEANUP] Removed temp file /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_am293ovf.pdf
+[TASK] Starting task for record recZpMy0TWXCltd6O
+[DOWNLOAD] Fetching Untitled document.pdf from https://v5.airtableusercontent.com/v3/u/47/47/1764144000000/PrL4HMWFjJ8_TtXXNHnn1Q/JrUmZbz4rYU6bs6yjnUfRcq_QG_eRkZkW085uCG4yclaFGSR9HVLNumilrlsfZpndi1YNrv-e7ohcPHnbEJJcW7GX_-Bd1_ofkQ4j9ABfKbXtrrhoN6Rqy5krt1wdMR1HFri92e9K4JaTgzEzQgjj5JfAUdh_gcu5kpP6NkUT5g/19mGjIGdpk-jc2RtL6nFNHFW_xPOx6_b9wMouoQZvDM
+Generating (viwAby4j1DDolKolH):   7%|███████████▎                                                                                                                                               | 19/261 [01:03<08:10,  2.02s/task, ✅ recHbq gen][DOWNLOAD] Saved Untitled document.pdf to /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_98xcxm73.pdf (42638 bytes)
+[UPLOAD] Uploading /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_98xcxm73.pdf (mime=application/pdf) to Gemini
+[GENAI] Response model: None
+[CLEANUP] Removed temp file /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_55c3wgux.pdf
+[CLEANUP] Removed temp file /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_5uajko46.pdf
+[TASK] Starting task for record recAAQcTlZCPbW7lu
+[DOWNLOAD] Fetching SolutionsUnitStudyGuide2025.docx.pdf from https://v5.airtableusercontent.com/v3/u/47/47/1764144000000/AQms5LslHobm2WjNvkrlyA/qFBPgEF1mXofg4DtyazyfRJVS2Eon9uzhsUmcBcMIHtVv6SwTXYmVYqWvRiJuAlWGZ1b6UHx3W8ght5pKs8Q_-6NzDpbBefrRoDHWO8zFbEulupd05kMy68kWR9qP9FZZ_fjW7yTGpqDkSTiNRYzvqNwJd6z_8d0OoEMjGSP2uPITOwBN3ocp_g_Mj8YcRoN/pyzQifssYGOdanwiKrKFvO_28SF7EXmnGPE6c6CRxUY
+Generating (viwAby4j1DDolKolH):   8%|███████████▉                                                                                                                                               | 20/261 [01:04<07:15,  1.81s/task, ✅ rec49n gen][UPLOAD] Uploaded file uri=https://generativelanguage.googleapis.com/v1beta/files/gx79h2wdkne6, name=files/gx79h2wdkne6
+[GENAI] Calling generate_content, attempt 1
+[PARTS] Adding file part uri=https://generativelanguage.googleapis.com/v1beta/files/gx79h2wdkne6, mime=application/pdf
+[DOWNLOAD] Saved SolutionsUnitStudyGuide2025.docx.pdf to /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_9xa5q_4h.pdf (314119 bytes)
+[UPLOAD] Uploading /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_9xa5q_4h.pdf (mime=application/pdf) to Gemini
+[UPLOAD] Uploaded file uri=https://generativelanguage.googleapis.com/v1beta/files/h42mgw0jakkt, name=files/h42mgw0jakkt
+[GENAI] Calling generate_content, attempt 1
+[PARTS] Adding file part uri=https://generativelanguage.googleapis.com/v1beta/files/h42mgw0jakkt, mime=application/pdf
+[GENAI] Response model: None
+[CLEANUP] Removed temp file /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_7q51wgt1.pdf
+[TASK] Starting task for record recvXcqAjwQ50LnxG
+[GENAI] Calling generate_content, attempt 1
+Generating (viwAby4j1DDolKolH):   8%|████████████▍                                                                                                                                              | 21/261 [01:12<14:45,  3.69s/task, ✅ recjMQ gen][GENAI] Response model: None
+[CLEANUP] Removed temp file /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_3ccewpa3.pdf
+[TASK] Starting task for record recGSBXXlyN2DDaIi
+[DOWNLOAD] Fetching Perimeter_Question.pdf from https://v5.airtableusercontent.com/v3/u/47/47/1764144000000/g974K-p0890yOign7UOSwQ/6jyhMWfPr1IM5P7WXn0PlSiD4MnNB0l_OV2IQhqQKZA2wm3NWDDXH8z9dOOhIkmnkbKZA6LsRWDg1HnKrGDX9A2-XDa0YSLm8LztrVqFi3S7lUPH4a_gSh1hjjjXH_ywcijVqKu9zixkgUmB0fk0xZTn-jEnX8scoPFmznPMTtY/pw8LdLBktCy3I8LURoAFPlKhMQjey5iXPeiUFWe-rNo
+Generating (viwAby4j1DDolKolH):   8%|█████████████                                                                                                                                              | 22/261 [01:17<15:57,  4.00s/task, ✅ rec2mN gen][DOWNLOAD] Saved Perimeter_Question.pdf to /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_7z8lfkv4.pdf (41989 bytes)
+[UPLOAD] Uploading /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_7z8lfkv4.pdf (mime=application/pdf) to Gemini
+[GENAI] Response model: None
+[CLEANUP] Removed temp file /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_jtfoffbd.pdf
+[TASK] Starting task for record rectOslsHFFT6A3R9
+[DOWNLOAD] Fetching sched_template.pdf from https://v5.airtableusercontent.com/v3/u/47/47/1764144000000/DYTbGfigg5jj13m21CQNDg/oWh5rdPWURdLUOstotq44vgU5l4dHHUh2XjZmPa4F1pzLVjoZxIZDcrOMtPfK7GPuiRL-oG_EYxFNUym9P9WG0lA1jor6hcf_8Y6igIhkXo0l1ZR0AS1buJjSYpXIsq66yPutHEhVQFhrHaoMsm9e5I0WON99XjOLk0pdtP8Cus/Xh4rESEBntiG8Ae5r3Xe-yPZT0DL1tbIvIkKBaFAiC4
+Generating (viwAby4j1DDolKolH):   9%|█████████████▋                                                                                                                                             | 23/261 [01:18<12:26,  3.14s/task, ✅ reccq9 gen][UPLOAD] Uploaded file uri=https://generativelanguage.googleapis.com/v1beta/files/t6booa2jkegm, name=files/t6booa2jkegm
+[GENAI] Calling generate_content, attempt 1
+[PARTS] Adding file part uri=https://generativelanguage.googleapis.com/v1beta/files/t6booa2jkegm, mime=application/pdf
+[DOWNLOAD] Saved sched_template.pdf to /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_l5e3fkdn.pdf (916813 bytes)
+[DOWNLOAD] Fetching guide.pdf from https://v5.airtableusercontent.com/v3/u/47/47/1764144000000/Ht1X8y5BoOX742f3jIelMg/QACls04YlrdoWYcT2MK4lprbN9B_MzzJ3CtcwUJCXv_b8Kln6BT2Qf-mUJXSzRmTpkINPZda5-TJ_zaCo0RzX2aefMXTfdsXDtYH6QE3RSXZ3OIzbnJtWxeIMDBqOZ-yFt8QhByoTpGu5R78rZAMSQ/QKJcx1MrBwNQd2WRDnlqbNwQvviayjAgLA-KoP-xqT4
+[DOWNLOAD] Saved guide.pdf to /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_7v71ascv.pdf (35978 bytes)
+[DOWNLOAD] Fetching 3990_minorsubjectclasses.pdf from https://v5.airtableusercontent.com/v3/u/47/47/1764144000000/Ns8KD63cENpcS_8LMT3NjQ/WhigcV2imqU_uARcNq8t03leJ7UXjGjUm_ZRDVJbvvH8oSZgr-IJsjU3KG424jlH7BMUzlZz6kW_lWeIxMzTVXqMuOgZ8awi6bParCx6LIE12TMp4GQglPfz7kpkCBR_lPOCtlTxxRNSHFl1jtWL2_Pm9caCPD5RPxGWMeH2LvRZLpuaQXn1tpMqpo0Xsr-C/yT6Jihi6Z6vXIqd9OsoP_Re7UAkPdUGGM8hmYSyWM1U
+[DOWNLOAD] Saved 3990_minorsubjectclasses.pdf to /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_enzaviob.pdf (39178 bytes)
+[DOWNLOAD] Fetching 3990_majorsubjectclasses.pdf from https://v5.airtableusercontent.com/v3/u/47/47/1764144000000/CbyEwRupn0xGIA9WCF3iRg/Z1ARWIBGPPpej_b086LPsnCuae-heqcEoLEDPuTrluoLQr65VtYxB4JpbMrhucbjQTw1bwCF7q5Si5eNCmxmCQ1lO0WOnU0qecLxL-ClHosaDHbjNl4jVK4EL0pNQxg0Z01aTwlZc2Itrz1cK7RplfnmZmvA0LM2GTeQbTPzEvnLZtVllc2BW7No8wKNYgbh/cl0qDsoj9R_BfXHTqnrH1ALUmQbomfGD_oEljYPmo88
+[DOWNLOAD] Saved 3990_majorsubjectclasses.pdf to /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_evr0n76z.pdf (41834 bytes)
+[UPLOAD] Uploading /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_l5e3fkdn.pdf (mime=application/pdf) to Gemini
+[UPLOAD] Uploaded file uri=https://generativelanguage.googleapis.com/v1beta/files/31xzxc7xtdv7, name=files/31xzxc7xtdv7
+[UPLOAD] Uploading /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_7v71ascv.pdf (mime=application/pdf) to Gemini
+[UPLOAD] Uploaded file uri=https://generativelanguage.googleapis.com/v1beta/files/nyfbrmwwyspu, name=files/nyfbrmwwyspu
+[UPLOAD] Uploading /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_enzaviob.pdf (mime=application/pdf) to Gemini
+[UPLOAD] Uploaded file uri=https://generativelanguage.googleapis.com/v1beta/files/c3cqfwl6uhd6, name=files/c3cqfwl6uhd6
+[UPLOAD] Uploading /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_evr0n76z.pdf (mime=application/pdf) to Gemini
+[UPLOAD] Uploaded file uri=https://generativelanguage.googleapis.com/v1beta/files/a2iy5qwkl4j2, name=files/a2iy5qwkl4j2
+[GENAI] Calling generate_content, attempt 1
+[PARTS] Adding file part uri=https://generativelanguage.googleapis.com/v1beta/files/31xzxc7xtdv7, mime=application/pdf
+[PARTS] Adding file part uri=https://generativelanguage.googleapis.com/v1beta/files/nyfbrmwwyspu, mime=application/pdf
+[PARTS] Adding file part uri=https://generativelanguage.googleapis.com/v1beta/files/c3cqfwl6uhd6, mime=application/pdf
+[PARTS] Adding file part uri=https://generativelanguage.googleapis.com/v1beta/files/a2iy5qwkl4j2, mime=application/pdf
+[GENAI] Response model: None
+[CLEANUP] Removed temp file /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_pcf92p2v.pdf
+[TASK] Starting task for record rec2gnh2vv3eLF7LQ
+[DOWNLOAD] Fetching TriangleProblem.pdf from https://v5.airtableusercontent.com/v3/u/47/47/1764144000000/1bIXd4V5JJOemZme3xNW6w/w8z9gJhEBIgGjg-iuI8Ay30weeuISJgBdNjBqL4kfggWgh6WZobA3e6_r4YJNguHAfAnixu5QbTQMQGrsOmZJvBNBxc99Os6LY0ZYwPJy89iJaNhwCG-fBow1-Zfjf-HjhDFGJ5xAHbG-uH907T3vpWkSEhzFVHNw2RqBthNuCA/4EOd-E-LjNT5fD6_HWCgRG6tttEklcWAeI9Y79166sM
+Generating (viwAby4j1DDolKolH):   9%|██████████████▎                                                                                                                                            | 24/261 [01:28<20:48,  5.27s/task, ✅ recSX2 gen][DOWNLOAD] Saved TriangleProblem.pdf to /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_qwk2zcly.pdf (611774 bytes)
+[UPLOAD] Uploading /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_qwk2zcly.pdf (mime=application/pdf) to Gemini
+[UPLOAD] Uploaded file uri=https://generativelanguage.googleapis.com/v1beta/files/zb6dtoe6eyf6, name=files/zb6dtoe6eyf6
+[GENAI] Calling generate_content, attempt 1
+[PARTS] Adding file part uri=https://generativelanguage.googleapis.com/v1beta/files/zb6dtoe6eyf6, mime=application/pdf
+[GENAI] Response model: None
+[TASK] Starting task for record recCobFrlIrTZvywX
+[DOWNLOAD] Fetching Screenshot 2025-08-25 210126.pdf from https://v5.airtableusercontent.com/v3/u/47/47/1764144000000/8EYLFHgv0KgBjqTdOx7Y1g/iRUdRPwcLgln1AwFKfxuMVuX35JhCOyq4UgswDpuG4koA2B2GwJmvEbI2S2gpYd4BOGytKsGPOG9MYHAbrxPWst_4xEySkE5B9CGS4rYxuC306D9XO2o7yRunWo8EeQjOVkQCWQrWPZ4cEGVBuCy730Cfxifd2YPLlnlBbUcjAoyl0jeCsWHbGvmEfKC-VbT/X_sleplGiaaiZERltKOQJDISrZ4KJAe9DeY-aLO9cUc
+Generating (viwAby4j1DDolKolH):  10%|██████████████▊                                                                                                                                            | 25/261 [01:34<21:16,  5.41s/task, ✅ recgF0 gen][DOWNLOAD] Saved Screenshot 2025-08-25 210126.pdf to /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_gtpc_zlw.pdf (42448 bytes)
+[UPLOAD] Uploading /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_gtpc_zlw.pdf (mime=application/pdf) to Gemini
+[GENAI] Response model: None
+[TASK] Starting task for record recdThmM1pqz5nH5j
+[DOWNLOAD] Fetching Image 1 task 3999.pdf from https://v5.airtableusercontent.com/v3/u/47/47/1764144000000/UpfunN4dXMkofa4haISQdw/VKcswfDvaNUg1MAXJQMmtX1zdqM4--9KGwnhNgSYbYJqBeTdIvmU0Nq3YumZ93xY0Tn1xLQRJv9a6CLAEmkCj-32LNDeTEIpk_K-TP4y3auXJY-tNy-Wi58SLaODk2YthBsw_ajJFHfR5rAsL4kVyV1vMKC_nLqZ9Luy4k42JsE/zdoTgHWyHptcFXrRHeISxbSWQC4UQM2OBBr0kfoAymQ
+Generating (viwAby4j1DDolKolH):  10%|███████████████▍                                                                                                                                           | 26/261 [01:35<15:34,  3.98s/task, ✅ recvXc gen][GENAI] Response model: None
+[CLEANUP] Removed temp file /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_9xa5q_4h.pdf
+[TASK] Starting task for record recKOynXf5IlF16xb
+[DOWNLOAD] Fetching Mountains_Railroads_and_Natural_Resources_Assignment.pdf from https://v5.airtableusercontent.com/v3/u/47/47/1764144000000/nqMR8h6HvE_A6Lauyl8kjA/K7s7MuaxJ8XwwNcdYU5JFER7KGMbeScpbjO6iYcMMYqznizuQplxCdV12SIXHjGfNlvNzAvyGmud66Tvi68gZQsGAm412nQ2WCaRU0HC6cLibj4iulL3qlR20AZ0m-jDCgnfdPj7331CZfTDdNl6CbX-XEfOZ35zQos0qUHmE340OJWG2sCtn4A0eRs4RLheY-BoueYIJSEJ8luORwDEqQ/DJvwb6c4Pib5WPrNreJ1HoyNscO44yK3Uh5UtPIUGVE
+Generating (viwAby4j1DDolKolH):  10%|████████████████                                                                                                                                           | 27/261 [01:35<11:32,  2.96s/task, ✅ recAAQ gen][DOWNLOAD] Saved Image 1 task 3999.pdf to /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_fdo3ofbn.pdf (1202995 bytes)
+[UPLOAD] Uploading /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_fdo3ofbn.pdf (mime=application/pdf) to Gemini
+[UPLOAD] Uploaded file uri=https://generativelanguage.googleapis.com/v1beta/files/ek56hlu0iydq, name=files/ek56hlu0iydq
+[GENAI] Calling generate_content, attempt 1
+[PARTS] Adding file part uri=https://generativelanguage.googleapis.com/v1beta/files/ek56hlu0iydq, mime=application/pdf
+[DOWNLOAD] Saved Mountains_Railroads_and_Natural_Resources_Assignment.pdf to /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_ftjcvrqr.pdf (122997 bytes)
+[UPLOAD] Uploading /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_ftjcvrqr.pdf (mime=application/pdf) to Gemini
+[GENAI] Response model: None
+[CLEANUP] Removed temp file /var/folders/tb/n9zdxp3n22v5whflkd0l2lnc0000gn/T/shashaank_1nvyu648.pdf
+[TASK] Starting task for record recMq3csKczRXdruX
+[GENAI] Calling generate_content, attempt 1
+Generating (viwAby4j1DDolKolH):  11%|████████████████▋                                                                                                                                          | 28/261 [01:36<09:37,  2.48s/task, ✅ recB4b gen][UPLOAD] Uploaded file uri=https://generativelanguage.googleapis.com/v1beta/files/tth703lgi7kw, name=files/tth703lgi7kw
+[GENAI] Calling generate_content, attempt 1
+[PARTS] Adding file part uri=https://generativelanguage.googleapis.com/v1beta/files/tth703lgi7kw, mime=application/pdf
+[UPLOAD] Uploaded file uri=https://generativelanguage.googleapis.com/v1beta/files/5ohcu69wbhlw, name=files/5ohcu69wbhlw
+[GENAI] Calling generate_content, attempt 1
+[PARTS] Adding file part uri=https://generativelanguage.googleapis.com/v1beta/files/5ohcu69wbhlw, mime=application/pdf

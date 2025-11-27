@@ -8,7 +8,7 @@ import tempfile
 import threading
 import time
 import traceback
-from concurrent.futures import ThreadPoolExecutor, TimeoutError, as_completed
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Any, Dict, List, Optional, Tuple
 
 import requests
@@ -26,17 +26,13 @@ AIRTABLE_API_KEY = os.getenv("AIRTABLE_API_KEY")
 AIRTABLE_BASE_ID = os.getenv("AIRTABLE_BASE_ID")
 AIRTABLE_TABLE = os.getenv("AIRTABLE_TABLE")
 
-# Views
-AIRTABLE_VIEW_CUJ = os.getenv("AIRTABLE_VIEW_CUJ")
-AIRTABLE_VIEW_EVALSET = os.getenv("AIRTABLE_VIEW_EVALSET")
-AIRTABLE_VIEW_TRAINING = os.getenv("AIRTABLE_VIEW_TRAINING")
+# General view
+AIRTABLE_VIEW_GENERAL = os.getenv("AIRTABLE_VIEW_General")
 
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
 
-# Output fields
-CUJ_OUTPUT_FIELD = "Gemini 3.0 model responses - CUJ"
-EVAL_OUTPUT_FIELD = "Gemini 3.0 model responses - Eval"
-TRAINING_OUTPUT_FIELD = "Gemini 3.0 model responses - Tasks"
+# Single output field (General view)
+OUTPUT_FIELD = "Gemini 3.0 model responses"
 
 # Relevant Airtable fields
 PROMPT_FIELD = "Consolidated Prompt - 10/25"
@@ -49,8 +45,8 @@ AIRTABLE_HEADERS = {
     "Content-Type": "application/json",
 }
 
-# How long we're willing to wait for one Gemini call before treating it as failed (in seconds)
-GEMINI_MAX_SECONDS = int(os.getenv("GEMINI_MAX_SECONDS", "300"))
+# Exact text we look for to decide a rerun
+TIMEOUT_ERROR_TEXT = "[ERROR] Gemini call timed out after 300 seconds."
 
 
 # ----------------------------
@@ -79,7 +75,7 @@ def airtable_list_records(view_id: str, page_size: int = 100) -> List[Dict[str, 
 
 
 def airtable_update_record(
-    record_id: str, fields: Dict[str, Any], max_retries: int = 5
+    record_id: str, fields: Dict[str, Any], max_retries: int = 10
 ) -> None:
     """PATCH update a single record with retries on 429/5xx."""
     url = f"{AIRTABLE_API}/{record_id}"
@@ -281,15 +277,8 @@ def call_gemini(
     prompt: str,
     uploaded_files: Optional[List[Tuple[Any, str]]] = None,
     system_instructions: Optional[str] = None,
-    max_retries: int = 3,
+    max_retries: int = 10,  # 🔥 Increased from 3 → 10
 ) -> Tuple[str, Optional[str]]:
-    """
-    Call Gemini with text + optional files.
-    uploaded_files: list of (file_obj, mime_type)
-
-    NOTE: This version does NOT use request_options (your client version
-    doesn't accept it). Timeout is enforced outside this function.
-    """
     guard_rails = (
         "Important: Produce a plain text answer only. "
         "Do not include or output new images in your response, but you may use attached files as context. "
@@ -298,7 +287,7 @@ def call_gemini(
     composed = f"{guard_rails}\n\n{sys_part}{prompt}"
 
     def build_parts() -> List[Dict[str, Any]]:
-        parts: List[Dict[str, Any]] = [{"text": composed}]
+        parts = [{"text": composed}]
         if uploaded_files:
             for f_obj, mime in uploaded_files:
                 file_uri = getattr(f_obj, "uri", None)
@@ -317,41 +306,37 @@ def call_gemini(
         return parts
 
     last_err = None
+
     for attempt in range(1, max_retries + 1):
         try:
             print(f"[GENAI] Calling generate_content, attempt {attempt}")
             parts = build_parts()
             resp = client.models.generate_content(
                 model=model_name,
-                contents=[
-                    {
-                        "role": "user",
-                        "parts": parts,
-                    },
-                ],
+                contents=[{"role": "user", "parts": parts}],
             )
             model_used = getattr(resp, "model", None)
             print(f"[GENAI] Response model: {model_used}")
 
+            # Extract text
             text = getattr(resp, "text", None)
             if not text:
                 cands = getattr(resp, "candidates", [])
                 if cands and getattr(cands[0], "content", None):
-                    parts_out = cands[0].content.parts or []
                     text = "\n".join(
-                        [
-                            getattr(p, "text", "")
-                            for p in parts_out
-                            if getattr(p, "text", "")
-                        ]
+                        getattr(p, "text", "")
+                        for p in cands[0].content.parts or []
+                        if getattr(p, "text", "")
                     )
-            text = (text or "").strip()
-            return text, model_used
+
+            return (text or "").strip(), model_used
+
         except Exception as e:
             last_err = e
             print(f"[GENAI ERROR] attempt {attempt}: {e}")
             traceback.print_exc()
-            time.sleep(1.5 * attempt)
+            time.sleep(1.5 * attempt)  # Backoff
+
     raise RuntimeError(f"Gemini call failed after {max_retries} attempts: {last_err}")
 
 
@@ -381,28 +366,36 @@ class RateLimiter:
 
 
 # ----------------------------
-# Core processing
+# Core processing (General view)
 # ----------------------------
-def process_view(
+def process_general_view(
     client: genai.Client,
     model_name: str,
     view_id: str,
     output_field: str,
-    overwrite: bool = False,
     dry_run: bool = False,
     limit: Optional[int] = None,
     workers: int = 4,
     airtable_rps: float = 4.0,
 ) -> Dict[str, int]:
-    print(f"\n[VIEW] Listing records for view={view_id}")
+    """
+    Behavior:
+    - Only re-run records in the General view where output_field EXACTLY equals TIMEOUT_ERROR_TEXT.
+    - Overwrite output_field for those records.
+    - Everything else is skipped.
+    """
+    print(f"\n[VIEW] Listing records for General view={view_id}")
     records = airtable_list_records(view_id)
     if limit is not None:
         records = records[:limit]
     total = len(records)
-    print(f"[VIEW] Total records in this view: {total}")
+    print(f"[VIEW] Total records in General view: {total}")
 
     jobs = []  # (rec_id, prompt, attachments)
-    already_filled = skipped_no_prompt = skipped_output_tasks = 0
+    already_filled_non_timeout = 0
+    skipped_no_prompt = 0
+    skipped_output_tasks = 0
+    timeout_reruns = 0
 
     for rec in records:
         rec_id = rec.get("id")
@@ -413,30 +406,39 @@ def process_view(
             continue
 
         existing = fields.get(output_field)
-        if existing and not overwrite:
-            already_filled += 1
-            continue
 
-        prompt = build_full_prompt(fields)
-        if not prompt:
-            skipped_no_prompt += 1
+        # Only re-run if the field is exactly the timeout error text
+        if isinstance(existing, str) and existing.strip() == TIMEOUT_ERROR_TEXT:
+            prompt = build_full_prompt(fields)
+            if not prompt:
+                skipped_no_prompt += 1
+                continue
+            attachments = extract_shashaank_attachments(fields)
+            jobs.append((rec_id, prompt, attachments))
+            timeout_reruns += 1
+        else:
+            # We skip anything that isn't the timeout error
+            already_filled_non_timeout += 1
             continue
-
-        attachments = extract_shashaank_attachments(fields)
-        jobs.append((rec_id, prompt, attachments))
 
     print(
-        f"[VIEW] Jobs to run: {len(jobs)}, already_filled={already_filled}, "
-        f"skipped_no_prompt={skipped_no_prompt}, skipped_output_tasks={skipped_output_tasks}"
+        f"[VIEW] Jobs to rerun (timeout only): {len(jobs)}, "
+        f"timeout_reruns={timeout_reruns}, "
+        f"already_filled_non_timeout={already_filled_non_timeout}, "
+        f"skipped_no_prompt={skipped_no_prompt}, "
+        f"skipped_output_tasks={skipped_output_tasks}"
     )
 
     if dry_run:
-        print(f"[DRY RUN] Would generate for {len(jobs)} tasks.")
+        print(
+            f"[DRY RUN] Would re-generate for {len(jobs)} timeout tasks in General view."
+        )
         return {
             "processed": len(jobs),
             "skipped_no_prompt": skipped_no_prompt,
             "skipped_output_tasks": skipped_output_tasks,
-            "already_filled": already_filled,
+            "already_filled_non_timeout": already_filled_non_timeout,
+            "timeout_reruns": timeout_reruns,
             "errors": 0,
             "total_seen": total,
         }
@@ -444,27 +446,17 @@ def process_view(
     errors = 0
 
     def _gen_task(rec_id: str, prompt: str, attachments: List[Dict[str, Any]]):
-        print(f"[TASK] Starting task for record {rec_id}")
+        print(f"[TASK] Starting timeout-rerun task for record {rec_id}")
         local_files = download_attachments(attachments)
         uploaded = upload_files_to_gemini(client, local_files)
 
         try:
-            # Run call_gemini in a tiny one-off executor so we can enforce a timeout
-            with ThreadPoolExecutor(max_workers=1) as inner_pool:
-                fut = inner_pool.submit(
-                    call_gemini,
-                    client,
-                    model_name,
-                    prompt,
-                    uploaded_files=uploaded,
-                )
-                text, served = fut.result(timeout=GEMINI_MAX_SECONDS)
-        except TimeoutError:
-            print(
-                f"[TIMEOUT] Gemini call for record {rec_id} exceeded {GEMINI_MAX_SECONDS}s, skipping."
+            text, served = call_gemini(
+                client,
+                model_name,
+                prompt,
+                uploaded_files=uploaded,
             )
-            text = f"[ERROR] Gemini call timed out after {GEMINI_MAX_SECONDS} seconds."
-            served = None
         except Exception as e:
             print(f"[GEN_TASK ERROR] record {rec_id}: {e}")
             traceback.print_exc()
@@ -492,7 +484,7 @@ def process_view(
         }
         with tqdm(
             total=len(future_to_rec),
-            desc=f"Generating+Writing ({view_id})",
+            desc=f"Generating+Writing (General view) [timeout reruns]",
             unit="task",
         ) as pbar:
             for fut in as_completed(future_to_rec):
@@ -523,7 +515,8 @@ def process_view(
         "processed": processed,
         "skipped_no_prompt": skipped_no_prompt,
         "skipped_output_tasks": skipped_output_tasks,
-        "already_filled": already_filled,
+        "already_filled_non_timeout": already_filled_non_timeout,
+        "timeout_reruns": timeout_reruns,
         "errors": errors,
         "total_seen": total,
     }
@@ -535,23 +528,20 @@ def process_view(
 def main():
     parser = argparse.ArgumentParser(
         description=(
-            "Parallel Gemini 3.0 Airtable generator for CUJ, Evalset, and Training views "
-            "(multimodal with Shashaank Run attachments, with debug logging)."
+            "Gemini 3.0 Airtable timeout rerunner for the General view "
+            "(multimodal with Shashaank Run attachments, only reruns tasks with timeout error)."
         )
     )
     parser.add_argument(
-        "--overwrite", action="store_true", help="Overwrite existing responses."
+        "--dry-run",
+        action="store_true",
+        help="Skip Gemini + Airtable writes; just report counts.",
     )
     parser.add_argument(
-        "--dry-run", action="store_true", help="Skip API calls and Airtable writes."
-    )
-    parser.add_argument(
-        "--limit", type=int, default=None, help="Limit rows per view (for testing)."
-    )
-    parser.add_argument(
-        "--only",
-        choices=["eval", "training", "cuj"],
-        help="Process only one view (eval, training, or cuj). Default: all three.",
+        "--limit",
+        type=int,
+        default=None,
+        help="Limit rows in General view (for testing).",
     )
     parser.add_argument(
         "--model",
@@ -585,68 +575,24 @@ def main():
         raise SystemExit(
             "Missing one of AIRTABLE_API_KEY, AIRTABLE_BASE_ID, AIRTABLE_TABLE."
         )
-
-    want_eval = args.only in (None, "eval")
-    want_training = args.only in (None, "training")
-    want_cuj = args.only in (None, "cuj")
-
-    if want_eval and not AIRTABLE_VIEW_EVALSET:
-        raise SystemExit("Missing AIRTABLE_VIEW_EVALSET env var.")
-    if want_training and not AIRTABLE_VIEW_TRAINING:
-        raise SystemExit("Missing AIRTABLE_VIEW_TRAINING env var.")
-    if want_cuj and not AIRTABLE_VIEW_CUJ:
-        raise SystemExit("Missing AIRTABLE_VIEW_CUJ env var.")
+    if not AIRTABLE_VIEW_GENERAL:
+        raise SystemExit("Missing AIRTABLE_VIEW_General env var.")
 
     client = build_genai_client(GOOGLE_API_KEY, api_version=args.api_version)
-    summaries: Dict[str, Dict[str, int]] = {}
 
-    if want_cuj:
-        print("\n=== Processing CUJ view ===")
-        summaries["cuj"] = process_view(
-            client,
-            args.model,
-            AIRTABLE_VIEW_CUJ,
-            CUJ_OUTPUT_FIELD,
-            args.overwrite,
-            args.dry_run,
-            args.limit,
-            args.workers,
-            args.airtable_rps,
-        )
-        print(json.dumps(summaries["cuj"], indent=2))
-
-    if want_eval:
-        print("\n=== Processing EVALSET view ===")
-        summaries["eval"] = process_view(
-            client,
-            args.model,
-            AIRTABLE_VIEW_EVALSET,
-            EVAL_OUTPUT_FIELD,
-            args.overwrite,
-            args.dry_run,
-            args.limit,
-            args.workers,
-            args.airtable_rps,
-        )
-        print(json.dumps(summaries["eval"], indent=2))
-
-    if want_training:
-        print("\n=== Processing TRAINING view ===")
-        summaries["training"] = process_view(
-            client,
-            args.model,
-            AIRTABLE_VIEW_TRAINING,
-            TRAINING_OUTPUT_FIELD,
-            args.overwrite,
-            args.dry_run,
-            args.limit,
-            args.workers,
-            args.airtable_rps,
-        )
-        print(json.dumps(summaries["training"], indent=2))
-
-    print("\n=== Done ===")
-    print(json.dumps(summaries, indent=2))
+    print("\n=== Processing GENERAL view (timeout reruns only) ===")
+    summary = process_general_view(
+        client,
+        args.model,
+        AIRTABLE_VIEW_GENERAL,
+        OUTPUT_FIELD,
+        args.dry_run,
+        args.limit,
+        args.workers,
+        args.airtable_rps,
+    )
+    print("\n=== Summary ===")
+    print(json.dumps(summary, indent=2))
 
 
 if __name__ == "__main__":

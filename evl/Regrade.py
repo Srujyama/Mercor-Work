@@ -1,20 +1,18 @@
 #!/usr/bin/env python3
 """
-Dual Autograder for Gemini Responses (GPT-5 + Gemini)
------------------------------------------------------
+Dual Autograder Rerun for Gemini Responses (GPT-5 + Gemini)
+-----------------------------------------------------------
 
-- Reads Gemini's generated responses from:
-    "Gemini 3.0 model responses - Eval"
-    "Gemini 3.0 model responses - Tasks"   (Training)
-    "Gemini 3.0 model responses - CUJ"
+- Looks for records where the checkbox column "Errored" is checked.
+- For those records ONLY, it re-grades the field:
+    "Gemini 3.0 model responses"
 
-- For each view {Eval, Training, CUJ}, writes four fields:
+- Overwrites (for those records ONLY) the GENERAL autorater fields:
 
-    Gemini Autorater - Gemini 3.0 Response Score - [view]      (0-100)
-    Gemini Autorater - Gemini 3.0 Response Summary - [view]    (JSON summary)
-
-    GPT5 Autorater - Gemini 3.0 Response Score - [view]        (0-100)
-    GPT5 Autorater - Gemini 3.0 Response Summary - [view]      (JSON summary)
+    Gemini Autorater - Gemini 3.0 Response Score
+    Gemini Autorater - Gemini 3.0 Response Summary
+    GPT5 Autorater - Gemini 3.0 Response Score
+    GPT5 Autorater - Gemini 3.0 Response Summary
 
 - Uses:
     - GPT-5 (OpenAI) via GPT_API_KEY
@@ -54,21 +52,14 @@ GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 if not GOOGLE_API_KEY:
     raise RuntimeError("Missing GOOGLE_API_KEY in .env")
 
-# Views & input field mapping
-VIEW_CONFIGS = {
-    "Eval": {
-        "view_id": os.getenv("AIRTABLE_VIEW_EVALSET"),
-        "input_field": "Gemini 3.0 model responses - Eval",
-    },
-    "Training": {
-        "view_id": os.getenv("AIRTABLE_VIEW_TRAINING"),
-        "input_field": "Gemini 3.0 model responses - Tasks",
-    },
-    "CUJ": {
-        "view_id": os.getenv("AIRTABLE_VIEW_CUJ"),
-        "input_field": "Gemini 3.0 model responses - CUJ",
-    },
-}
+# Single view config: we’ll use the General view
+GENERAL_VIEW_ID = os.getenv("AIRTABLE_VIEW_General")
+if not GENERAL_VIEW_ID:
+    raise RuntimeError("Missing AIRTABLE_VIEW_General in .env")
+
+VIEW_NAME = "General"
+INPUT_FIELD = "Gemini 3.0 model responses"
+ERRORED_FIELD = "Errored"  # Checkbox column
 
 # Tunables
 GPT_MODEL = os.getenv("OPENAI_MODEL", "gpt-5")
@@ -85,21 +76,11 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-# ----------------------- Output field helpers -----------------------
-def gpt_score_field(view_name: str) -> str:
-    return f"GPT5 Autorater - Gemini 3.0 Response Score - {view_name}"
-
-
-def gpt_summary_field(view_name: str) -> str:
-    return f"GPT5 Autorater - Gemini 3.0 Response Summary - {view_name}"
-
-
-def gemini_score_field(view_name: str) -> str:
-    return f"Gemini Autorater - Gemini 3.0 Response Score - {view_name}"
-
-
-def gemini_summary_field(view_name: str) -> str:
-    return f"Gemini Autorater - Gemini 3.0 Response Summary - {view_name}"
+# ----------------------- Output field names (GENERAL) -----------------------
+GPT_SCORE_FIELD = "GPT5 Autorater - Gemini 3.0 Response Score"
+GPT_SUMMARY_FIELD = "GPT5 Autorater - Gemini 3.0 Response Summary"
+GEMINI_SCORE_FIELD = "Gemini Autorater - Gemini 3.0 Response Score"
+GEMINI_SUMMARY_FIELD = "Gemini Autorater - Gemini 3.0 Response Summary"
 
 
 # ----------------------- Small helpers -----------------------
@@ -142,14 +123,20 @@ def _parse_boolean(x):
 
 
 # ----------------------- Main Class -----------------------
-class GeminiResponseDualAutograder:
+class GeminiResponseDualAutograderRerun:
+    """
+    Reruns autograding ONLY for records where `Errored` checkbox is checked.
+    Uses the unified "Gemini 3.0 model responses" field as the solution,
+    and writes to the GENERAL autorater fields (no per-view suffix).
+    """
+
     def __init__(self):
         # Airtable
         self.api = Api(AIRTABLE_API_KEY)
         self.table = self.api.table(AIRTABLE_BASE_ID, AIRTABLE_TABLE_ID)
 
         # Stats
-        self.stats = {"processed": 0, "graded": 0, "failed": 0}
+        self.stats = {"processed": 0, "graded": 0, "failed": 0, "skipped": 0}
 
         # GPT client + concurrency
         self.gpt_client = AsyncOpenAI(api_key=GPT_API_KEY)
@@ -174,51 +161,53 @@ class GeminiResponseDualAutograder:
             "IMPORTANT OUTPUT FORMAT:\n"
             "Return ONLY a single JSON object of the shape:\n"
             "{\n"
-            '  "<criterion_key>": {\n'
-            '    "decision": true|false,\n'
-            '    "reasoning": "Exactly 10 sentences."\n'
+            '  \"<criterion_key>\": {\n'
+            '    \"decision\": true|false,\n'
+            '    \"reasoning\": \"Exactly 10 sentences.\"\n'
             "  }, ...\n"
             "}\n"
             "No extra keys, no markdown, no code fences."
         )
 
-    # ------------------- Record discovery per view -------------------
-    def get_records_for_view(self, view_name: str, view_id: str, input_field: str):
+    # ------------------- Record discovery -------------------
+    def get_errored_records(self):
         """
-        Return records from this view where input_field is non-empty and
-        at least one of the four output fields is missing.
+        Return records from the General view where:
+          - Errored checkbox is True
+          - Gemini 3.0 model responses is non-empty
+        We will regrade ONLY these records, overwriting autorater fields.
         """
         try:
             fields_to_fetch = [
                 "Rubric JSON",
-                "MT Prompt",
-                input_field,
-                gpt_score_field(view_name),
-                gpt_summary_field(view_name),
-                gemini_score_field(view_name),
-                gemini_summary_field(view_name),
+                "Consolidated Prompt - 10/25",
+                INPUT_FIELD,
+                ERRORED_FIELD,
+                GPT_SCORE_FIELD,
+                GPT_SUMMARY_FIELD,
+                GEMINI_SCORE_FIELD,
+                GEMINI_SUMMARY_FIELD,
             ]
-            records = self.table.all(view=view_id, fields=fields_to_fetch)
+            records = self.table.all(view=GENERAL_VIEW_ID, fields=fields_to_fetch)
             logger.info(
-                f"[{view_name}] Fetched {len(records)} total records from view {view_id}"
+                f"[{VIEW_NAME}] Fetched {len(records)} total records from view {GENERAL_VIEW_ID}"
             )
             needing = []
             for rec in records:
                 f = rec.get("fields", {})
-                inp = (f.get(input_field) or "").strip()
-                if not inp:
+                errored = bool(f.get(ERRORED_FIELD, False))
+                solution = (f.get(INPUT_FIELD) or "").strip()
+                if not errored:
                     continue
-                if (
-                    f.get(gpt_score_field(view_name)) is None
-                    or f.get(gpt_summary_field(view_name)) is None
-                    or f.get(gemini_score_field(view_name)) is None
-                    or f.get(gemini_summary_field(view_name)) is None
-                ):
-                    needing.append(rec)
-            logger.info(f"[{view_name}] Found {len(needing)} records needing grading")
+                if not solution:
+                    continue
+                needing.append(rec)
+            logger.info(
+                f"[{VIEW_NAME}] Found {len(needing)} records with Errored = True and non-empty solution"
+            )
             return needing
         except Exception as e:
-            logger.error(f"[{view_name}] Error fetching records: {e}")
+            logger.error(f"[{VIEW_NAME}] Error fetching records: {e}")
             return []
 
     # ------------------- GPT chat helper (JSON) -------------------
@@ -388,38 +377,33 @@ class GeminiResponseDualAutograder:
         }
 
     # ------------------- Per-record processing -------------------
-    async def process_record_for_view(
-        self, view_name: str, input_field: str, record: dict
-    ) -> bool:
+    async def process_record(self, record: dict) -> bool:
         fields = record.get("fields", {})
         record_id = record["id"]
+
+        errored = bool(fields.get(ERRORED_FIELD, False))
+        if not errored:
+            self.stats["skipped"] += 1
+            return False
 
         rubric_json = fields.get("Rubric JSON", "")
         prompt = str(fields.get("Consolidated Prompt - 10/25", "") or "")
 
         if not rubric_json:
-            logger.warning(f"[{view_name}] No rubric found for {record_id}")
+            logger.warning(f"[{VIEW_NAME}] No rubric found for {record_id}")
             return False
         try:
             rubric = json.loads(rubric_json)
         except json.JSONDecodeError as e:
-            logger.error(f"[{view_name}] Invalid rubric JSON for {record_id}: {e}")
+            logger.error(f"[{VIEW_NAME}] Invalid rubric JSON for {record_id}: {e}")
             return False
 
-        solution = (fields.get(input_field) or "").strip()
+        solution = (fields.get(INPUT_FIELD) or "").strip()
         if not solution:
+            logger.warning(f"[{VIEW_NAME}] No solution in '{INPUT_FIELD}' for {record_id}")
             return False
 
-        # If all outputs already filled, skip
-        if (
-            fields.get(gpt_score_field(view_name)) is not None
-            and fields.get(gpt_summary_field(view_name)) is not None
-            and fields.get(gemini_score_field(view_name)) is not None
-            and fields.get(gemini_summary_field(view_name)) is not None
-        ):
-            return False
-
-        logger.info(f"[{view_name}] Grading record {record_id} (Gemini response)")
+        logger.info(f"[{VIEW_NAME}] Re-grading record {record_id} (Errored = True)")
 
         # Grade with both backends in parallel
         tasks = [
@@ -432,22 +416,24 @@ class GeminiResponseDualAutograder:
         gpt_res, gem_res = results
 
         if isinstance(gpt_res, Exception):
-            logger.error(f"[{view_name}] GPT grading failed for {record_id}: {gpt_res}")
+            logger.error(f"[{VIEW_NAME}] GPT grading failed for {record_id}: {gpt_res}")
         else:
-            updates[gpt_score_field(view_name)] = gpt_res["percentage"]
-            updates[gpt_summary_field(view_name)] = gpt_res["summary"]
+            updates[GPT_SCORE_FIELD] = gpt_res["percentage"]
+            updates[GPT_SUMMARY_FIELD] = gpt_res["summary"]
 
         if isinstance(gem_res, Exception):
             logger.error(
-                f"[{view_name}] Gemini grading failed for {record_id}: {gem_res}"
+                f"[{VIEW_NAME}] Gemini grading failed for {record_id}: {gem_res}"
             )
         else:
-            updates[gemini_score_field(view_name)] = gem_res["percentage"]
-            updates[gemini_summary_field(view_name)] = gem_res["summary"]
+            updates[GEMINI_SCORE_FIELD] = gem_res["percentage"]
+            updates[GEMINI_SUMMARY_FIELD] = gem_res["summary"]
 
         if not updates:
             return False
 
+        # NOTE: we intentionally do NOT clear the Errored flag here
+        # (you can add that if you want: updates[ERRORED_FIELD] = False)
         loop = asyncio.get_running_loop()
         try:
             await _with_retries(
@@ -455,62 +441,49 @@ class GeminiResponseDualAutograder:
                     None, self.table.update, record_id, updates
                 )
             )
-            logger.info(f"[{view_name}] ✅ Updated record {record_id}")
+            logger.info(f"[{VIEW_NAME}] ✅ Updated record {record_id}")
             return True
         except Exception as e:
-            logger.error(f"[{view_name}] Airtable update failed for {record_id}: {e}")
+            logger.error(f"[{VIEW_NAME}] Airtable update failed for {record_id}: {e}")
             return False
 
-    # ------------------- Runner over all views -------------------
+    # ------------------- Runner -------------------
     async def run(self):
-        logger.info("🤖 Starting Dual Autograder for Gemini responses (GPT-5 + Gemini)")
+        logger.info(
+            "🤖 Starting Dual Autograder RERUN for Gemini responses (GPT-5 + Gemini, Errored only)"
+        )
 
-        tasks = []
-        # Process each configured view
-        for view_name, cfg in VIEW_CONFIGS.items():
-            view_id = cfg.get("view_id")
-            input_field = cfg.get("input_field")
-            if not view_id:
-                logger.warning(f"[{view_name}] Skipping: no view_id set in .env")
-                continue
-
-            records = self.get_records_for_view(view_name, view_id, input_field)
-            if not records:
-                continue
-
-            # Limit concurrent records per view to avoid API overload
-            per_view_sem = asyncio.Semaphore(8)
-
-            async def process_with_sem(
-                rec, _view_name=view_name, _input_field=input_field
-            ):
-                async with per_view_sem:
-                    ok = await self.process_record_for_view(
-                        _view_name, _input_field, rec
-                    )
-                    self.stats["processed"] += 1
-                    if ok:
-                        self.stats["graded"] += 1
-                    else:
-                        self.stats["failed"] += 1
-
-            for r in records:
-                tasks.append(process_with_sem(r))
-
-        if not tasks:
-            logger.info("✅ No records need grading in any view")
+        records = self.get_errored_records()
+        if not records:
+            logger.info("✅ No records with Errored = True and non-empty solution")
             return
+
+        per_view_sem = asyncio.Semaphore(8)
+        tasks = []
+
+        async def process_with_sem(rec):
+            async with per_view_sem:
+                ok = await self.process_record(rec)
+                self.stats["processed"] += 1
+                if ok:
+                    self.stats["graded"] += 1
+                else:
+                    self.stats["failed"] += 1
+
+        for r in records:
+            tasks.append(process_with_sem(r))
 
         await asyncio.gather(*tasks)
         logger.info(
             f"🎉 Done. Processed={self.stats['processed']} "
-            f"Graded={self.stats['graded']} Failed={self.stats['failed']}"
+            f"Graded={self.stats['graded']} Failed={self.stats['failed']} "
+            f"Skipped(non-errored)={self.stats['skipped']}"
         )
 
 
 # ------------------- Entrypoint -------------------
 async def main():
-    grader = GeminiResponseDualAutograder()
+    grader = GeminiResponseDualAutograderRerun()
     await grader.run()
 
 

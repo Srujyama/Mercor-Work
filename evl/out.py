@@ -1,19 +1,12 @@
 #!/usr/bin/env python3
 """
-Comparison Bar Charts: GPT-5 vs Gemini 3.0 (Single-turn vs Multi-turn)
+Comparison Bar Charts: GPT-5 vs Gemini 3.0
 
-- Reads data from Airtable (view: AIRTABLE_VIEW_Sort)
-- Auto-detects:
-    - domain column (prefers Domain1, Domain Name, Domain)
-    - interaction column (prefers Interaction Type)
-    - Gemini score column: Gemini Autorater - Gemini 3.0 Response Score
-    - GPT5 score column:   GPT5 Autorater - Gemini 3.0 Response Score
-- Infers domain values (education / HLE) from text
-- Groups by Interaction Type ('Single-turn', 'Multi-turn')
-- Computes mean (%) and 95% confidence intervals
-- Outputs:
-    - education_chart.png
-    - hle_chart.png
+Charts produced:
+1. Interaction Type (Education)
+2. Interaction Type (HLE)
+3. Requested Outputs (Education)
+4. Requested Outputs (HLE)
 """
 
 import logging
@@ -55,8 +48,11 @@ logger = logging.getLogger(__name__)
 VALID_DOMAINS = ["education", "hle"]
 VALID_INTERACTIONS = ["single-turn", "multi-turn"]
 
+REQUESTED_OUTPUTS_FIELD = "Requested Outputs"
+OUTPUT_GROUPS = ["File / Image", "Text / LaTeX / Code"]
 
-# ----------------------- Helpers -------------------------
+
+# ----------------------- Airtable fetch ------------------
 def fetch_airtable_dataframe() -> pd.DataFrame:
     """
     Fetch records from Airtable using the configured view and
@@ -78,6 +74,7 @@ def fetch_airtable_dataframe() -> pd.DataFrame:
     return df
 
 
+# ----------------------- Column inference ----------------
 def infer_columns(df: pd.DataFrame):
     """
     Infer the best-guess column names for:
@@ -114,7 +111,6 @@ def infer_columns(df: pd.DataFrame):
     if "Gemini Autorater - Gemini 3.0 Response Score" in df.columns:
         gemini_col = "Gemini Autorater - Gemini 3.0 Response Score"
     else:
-        # fallback: anything that looks like a Gemini autorater score
         for c in cols:
             lc = c.lower()
             if "gemini autorater" in lc and "response score" in lc:
@@ -160,6 +156,7 @@ def infer_columns(df: pd.DataFrame):
     return domain_col, interaction_col, gemini_col, gpt5_col
 
 
+# ----------------------- Normalizers ---------------------
 def normalize_domain(value: str) -> str | None:
     """
     Map arbitrary domain text to 'education' or 'hle' based on substrings.
@@ -171,7 +168,6 @@ def normalize_domain(value: str) -> str | None:
     if not v:
         return None
 
-    # Add more heuristics here if needed
     if "hle" in v:
         return "hle"
     if "educ" in v:
@@ -199,6 +195,7 @@ def normalize_interaction(value: str) -> str | None:
     return None
 
 
+# ----------------------- Clean & filter ------------------
 def clean_and_filter(
     df: pd.DataFrame,
 ) -> tuple[pd.DataFrame, str, str, str | None, str | None]:
@@ -207,7 +204,7 @@ def clean_and_filter(
     and ensure numeric percentages.
 
     Returns:
-        df_filtered, domain_col, interaction_col, gemini_col, gpt5_col
+        df_filtered, domain_col_norm, interaction_col_norm, gemini_col, gpt5_col
     """
     domain_col, interaction_col, gemini_col, gpt5_col = infer_columns(df)
 
@@ -253,6 +250,7 @@ def clean_and_filter(
     return df, "_domain_norm", "_interaction_norm", gemini_col, gpt5_col
 
 
+# ----------------------- Stats helpers -------------------
 def compute_mean_and_ci(values: pd.Series, alpha: float = 0.05) -> tuple[float, float]:
     """
     Compute mean and 95% confidence interval half-width for a 1D numeric Series.
@@ -294,12 +292,6 @@ def compute_stats_for_domain(
     """
     For a given domain ('education' or 'hle'), compute mean (%) and 95% CI
     for each (Interaction Type, model).
-
-    Returns a DataFrame with:
-        - interaction_type
-        - model (GPT-5 / Gemini)
-        - mean
-        - ci
     """
     sub = df[df[domain_col_norm] == domain].copy()
     logger.info("For domain '%s', used %d records for aggregation.", domain, len(sub))
@@ -336,33 +328,146 @@ def compute_stats_for_domain(
     return pd.DataFrame(rows)
 
 
-def plot_domain_stats(stats_df: pd.DataFrame, domain: str, output_path: str):
+# ----------------------- Requested Outputs helpers -------
+def _has_any_tag(req, target_tags: list[str]) -> bool:
     """
-    Produce a bar chart for a given domain.
-
-    Visuals:
-      - y-axis fixed to 0–40%
-      - x-axis label: 'Interaction Type'
-      - custom colors for GPT-5 / Gemini
-      - error bars for 95% CI
-      - '95% CI' label box bottom-right
-      - percentage labels ABOVE error bars
+    Return True if Requested Outputs contains ANY of the target tags
+    (case-insensitive, substring match).
+    Handles str / list / dict formats.
     """
-    if stats_df.empty:
-        logger.warning("No stats to plot for domain '%s'. Skipping.", domain)
-        return
+    if req is None:
+        return False
 
-    # Pivot for plotting
-    mean_pivot = stats_df.pivot(
-        index="interaction_type", columns="model", values="mean"
+    targets = [t.lower() for t in target_tags]
+
+    def match(s: str) -> bool:
+        s = s.lower()
+        return any(t in s for t in targets)
+
+    # String
+    if isinstance(req, str):
+        return match(req)
+
+    # List of strings or dicts
+    if isinstance(req, list):
+        for item in req:
+            if isinstance(item, str) and match(item):
+                return True
+            if isinstance(item, dict):
+                name = item.get("name")
+                if isinstance(name, str) and match(name):
+                    return True
+        return False
+
+    # Dict
+    if isinstance(req, dict):
+        name = req.get("name")
+        if isinstance(name, str) and match(name):
+            return True
+        for v in req.values():
+            if isinstance(v, str) and match(v):
+                return True
+
+    return False
+
+
+def compute_stats_for_requested_outputs(
+    df: pd.DataFrame,
+    domain: str,
+    domain_col_norm: str,
+    gemini_col: str | None,
+    gpt5_col: str | None,
+) -> pd.DataFrame:
+    """
+    For a given domain, compute mean (%) and 95% CI for each Requested Output group:
+        - "File / Image"
+        - "Text / LaTeX / Code"
+
+    A task can contribute to both groups if it contains both types.
+    """
+    if REQUESTED_OUTPUTS_FIELD not in df.columns:
+        logger.warning(
+            "Requested Outputs field %r not found in dataframe; skipping outputs chart.",
+            REQUESTED_OUTPUTS_FIELD,
+        )
+        return pd.DataFrame()
+
+    sub = df[df[domain_col_norm] == domain].copy()
+    logger.info(
+        "[Outputs] For domain '%s', %d records before outputs filtering",
+        domain,
+        len(sub),
     )
-    ci_pivot = stats_df.pivot(index="interaction_type", columns="model", values="ci")
 
-    ordered_labels = [i.title() for i in VALID_INTERACTIONS]
-    mean_pivot = mean_pivot.reindex(ordered_labels)
-    ci_pivot = ci_pivot.reindex(ordered_labels)
+    file_image_mask = sub[REQUESTED_OUTPUTS_FIELD].apply(
+        lambda v: _has_any_tag(v, ["file", "image"])
+    )
+    text_code_mask = sub[REQUESTED_OUTPUTS_FIELD].apply(
+        lambda v: _has_any_tag(v, ["text", "latex", "code"])
+    )
 
-    x = range(len(ordered_labels))
+    groups = {
+        "File / Image": file_image_mask,
+        "Text / LaTeX / Code": text_code_mask,
+    }
+
+    rows = []
+    model_map: dict[str, str] = {}
+    if gemini_col is not None:
+        model_map[gemini_col] = "Gemini 3.0"
+    if gpt5_col is not None:
+        model_map[gpt5_col] = "GPT-5"
+
+    for group_label, mask in groups.items():
+        group_df = sub[mask].copy()
+        logger.info(
+            "[Outputs] Domain '%s', group '%s' → %d records",
+            domain,
+            group_label,
+            len(group_df),
+        )
+
+        for col, model_name in model_map.items():
+            if col not in group_df.columns:
+                continue
+            vals = group_df[col].dropna()
+            if len(vals) == 0:
+                continue
+
+            mean, ci = compute_mean_and_ci(vals)
+            rows.append(
+                {
+                    "output_group": group_label,
+                    "model": model_name,
+                    "mean": mean,
+                    "ci": ci,
+                    "n": len(vals),
+                }
+            )
+
+    logger.info(
+        "[Outputs] Domain '%s' total stats rows: %d", domain, len(rows)
+    )
+    return pd.DataFrame(rows)
+
+
+# ----------------------- Plotting: shared style ----------
+def _plot_bars_with_ci(
+    ax,
+    mean_pivot: pd.DataFrame,
+    ci_pivot: pd.DataFrame,
+    index_labels: list[str],
+    x_label: str,
+    title: str,
+):
+    """
+    Internal helper that:
+      - draws GPT-5 and Gemini 3.0 bars with CI
+      - y-limits 0–40
+      - adds labels above error bars
+      - adds legend and '95% CI' box
+    """
+    x = range(len(index_labels))
     width = 0.35
 
     gpt5_means = mean_pivot.get("GPT-5")
@@ -370,13 +475,11 @@ def plot_domain_stats(stats_df: pd.DataFrame, domain: str, output_path: str):
     gpt5_ci = ci_pivot.get("GPT-5")
     gemini_ci = ci_pivot.get("Gemini 3.0")
 
-    fig, ax = plt.subplots(figsize=(8, 6))
-
     # Custom colors (RGB 0–1)
     gpt5_color = (0.397, 0.743, 0.567)
     gemini_color = (0.378, 0.555, 0.936)
 
-    # Plot GPT-5 bars
+    # Bars
     gpt5_bars = None
     if gpt5_means is not None:
         gpt5_bars = ax.bar(
@@ -389,7 +492,6 @@ def plot_domain_stats(stats_df: pd.DataFrame, domain: str, output_path: str):
             color=gpt5_color,
         )
 
-    # Plot Gemini bars
     gemini_bars = None
     if gemini_means is not None:
         gemini_bars = ax.bar(
@@ -402,24 +504,18 @@ def plot_domain_stats(stats_df: pd.DataFrame, domain: str, output_path: str):
             color=gemini_color,
         )
 
-    # ---- Add labels ABOVE error bars ----
+    # Labels ABOVE error bars
     def add_value_labels(bar_container, ci_series):
         if bar_container is None or ci_series is None:
             return
-
-        # Ensure we can index CI by the same x-position index
         ci_list = list(ci_series.values)
 
         for idx, bar in enumerate(bar_container):
             height = bar.get_height()
             if pd.isna(height):
                 continue
-
             ci = ci_list[idx] if idx < len(ci_list) and pd.notna(ci_list[idx]) else 0.0
-            # base position = bar top + CI + small margin
             y = height + ci + 0.8
-
-            # Don't go above the top of the axis (40)
             if y > 40:
                 y = 39.5
 
@@ -437,26 +533,18 @@ def plot_domain_stats(stats_df: pd.DataFrame, domain: str, output_path: str):
     add_value_labels(gpt5_bars, gpt5_ci)
     add_value_labels(gemini_bars, gemini_ci)
 
-    # Axes and styling
+    # Axes & styling
     ax.set_xticks(list(x))
-    ax.set_xticklabels(ordered_labels)
-    ax.set_xlabel("Interaction Type")
+    ax.set_xticklabels(index_labels, rotation=0)
+    ax.set_xlabel(x_label)
     ax.set_ylabel("Pass Rate (%)")
     ax.set_ylim(0, 40)
-
-    if domain == "education":
-        title = "Single-Turn vs Multi-Turn – Education"
-    elif domain == "hle":
-        title = "Single-Turn vs Multi-Turn – HLE"
-    else:
-        title = f"Single-Turn vs Multi-Turn – {domain}"
     ax.set_title(title)
 
-    # Legend
     legend = ax.legend(loc="upper right", title="Graded by")
     plt.setp(legend.get_title(), fontweight="bold")
 
-    # Small rounded label box: "95% CI"
+    # 95% CI box
     ax.text(
         0.99,
         0.02,
@@ -473,6 +561,45 @@ def plot_domain_stats(stats_df: pd.DataFrame, domain: str, output_path: str):
         ),
     )
 
+
+# ----------------------- Plot: interaction type ----------
+def plot_domain_stats(stats_df: pd.DataFrame, domain: str, output_path: str):
+    """
+    Interaction Type chart (Single-Turn vs Multi-Turn).
+    """
+    if stats_df.empty:
+        logger.warning("No stats to plot for domain '%s'. Skipping.", domain)
+        return
+
+    mean_pivot = stats_df.pivot(
+        index="interaction_type", columns="model", values="mean"
+    )
+    ci_pivot = stats_df.pivot(
+        index="interaction_type", columns="model", values="ci"
+    )
+
+    ordered_labels = [i.title() for i in VALID_INTERACTIONS]
+    mean_pivot = mean_pivot.reindex(ordered_labels)
+    ci_pivot = ci_pivot.reindex(ordered_labels)
+
+    fig, ax = plt.subplots(figsize=(8, 6))
+
+    if domain == "education":
+        title = "Single-Turn vs Multi-Turn – Education"
+    elif domain == "hle":
+        title = "Single-Turn vs Multi-Turn – HLE"
+    else:
+        title = f"Single-Turn vs Multi-Turn – {domain}"
+
+    _plot_bars_with_ci(
+        ax,
+        mean_pivot,
+        ci_pivot,
+        ordered_labels,
+        x_label="Interaction Type",
+        title=title,
+    )
+
     plt.tight_layout()
     fig.savefig(output_path, dpi=200, bbox_inches="tight")
     plt.close(fig)
@@ -480,32 +607,95 @@ def plot_domain_stats(stats_df: pd.DataFrame, domain: str, output_path: str):
     logger.info("Saved chart for domain '%s' to %s", domain, output_path)
 
 
-# ----------------------- Main -------------------------
+# ----------------------- Plot: requested outputs ---------
+def plot_outputs_stats(stats_df: pd.DataFrame, domain: str, output_path: str):
+    """
+    Requested Outputs chart:
+        - File / Image
+        - Text / LaTeX / Code
+    """
+    if stats_df.empty:
+        logger.warning(
+            "[Outputs] No stats to plot for domain '%s'. Skipping.", domain
+        )
+        return
+
+    mean_pivot = stats_df.pivot(
+        index="output_group", columns="model", values="mean"
+    )
+    ci_pivot = stats_df.pivot(
+        index="output_group", columns="model", values="ci"
+    )
+
+    ordered_labels = OUTPUT_GROUPS
+    mean_pivot = mean_pivot.reindex(ordered_labels)
+    ci_pivot = ci_pivot.reindex(ordered_labels)
+
+    fig, ax = plt.subplots(figsize=(8, 6))
+
+    if domain == "education":
+        title = "Requested Outputs – Education"
+    elif domain == "hle":
+        title = "Requested Outputs – HLE"
+    else:
+        title = f"Requested Outputs – {domain.capitalize()}"
+
+    _plot_bars_with_ci(
+        ax,
+        mean_pivot,
+        ci_pivot,
+        ordered_labels,
+        x_label="Requested Outputs",
+        title=title,
+    )
+
+    plt.tight_layout()
+    fig.savefig(output_path, dpi=200, bbox_inches="tight")
+    plt.close(fig)
+
+    logger.info("[Outputs] Saved chart for domain '%s' to %s", domain, output_path)
+
+
+# ----------------------- Main ---------------------------
 def main():
     df = fetch_airtable_dataframe()
 
     df_clean, dom_norm_col, inter_norm_col, gemini_col, gpt5_col = clean_and_filter(df)
 
-    # Debug: see what domain/interaction values we have after normalization
     logger.info(
-        "Normalized domain values: %s", sorted(df_clean[dom_norm_col].dropna().unique())
+        "Normalized domain values: %s",
+        sorted(df_clean[dom_norm_col].dropna().unique()),
     )
     logger.info(
         "Normalized interaction values: %s",
         sorted(df_clean[inter_norm_col].dropna().unique()),
     )
 
-    # Education chart
+    # Interaction-type charts
     edu_stats = compute_stats_for_domain(
         df_clean, "education", dom_norm_col, inter_norm_col, gemini_col, gpt5_col
     )
     plot_domain_stats(edu_stats, "education", "education_chart.png")
 
-    # HLE chart
     hle_stats = compute_stats_for_domain(
         df_clean, "hle", dom_norm_col, inter_norm_col, gemini_col, gpt5_col
     )
     plot_domain_stats(hle_stats, "hle", "hle_chart.png")
+
+    # Requested Outputs charts
+    edu_out_stats = compute_stats_for_requested_outputs(
+        df_clean, "education", dom_norm_col, gemini_col, gpt5_col
+    )
+    plot_outputs_stats(
+        edu_out_stats, "education", "requested_outputs_education.png"
+    )
+
+    hle_out_stats = compute_stats_for_requested_outputs(
+        df_clean, "hle", dom_norm_col, gemini_col, gpt5_col
+    )
+    plot_outputs_stats(
+        hle_out_stats, "hle", "requested_outputs_hle.png"
+    )
 
     logger.info("Done.")
 

@@ -100,71 +100,6 @@ def fetch_airtable_dataframe() -> pd.DataFrame:
     return df
 
 
-# ----------------------- Domain filtering ----------------
-def infer_domain_column(df: pd.DataFrame) -> str:
-    """
-    Infer the best-guess domain column:
-      - Domain1 > Domain Name > Domain
-    """
-    cols = list(df.columns)
-    domain_candidates = ["Domain1", "Domain Name", "Domain"]
-    for name in domain_candidates:
-        if name in df.columns:
-            logger.info("Using domain column: %r", name)
-            return name
-
-    raise KeyError(
-        "Could not infer a domain column (no Domain1/Domain Name/Domain). "
-        f"Available columns: {cols}"
-    )
-
-
-def normalize_domain(value: Any) -> str | None:
-    """
-    Map arbitrary domain text to 'education' or 'hle' based on substrings.
-    Returns None if it doesn't look like either.
-    """
-    if value is None:
-        return None
-    v = str(value).strip().lower()
-    if not v:
-        return None
-
-    if "hle" in v:
-        return "hle"
-    if "educ" in v:
-        return "education"
-
-    return None
-
-
-def clean_and_filter(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Infer domain column, normalize domain values, and keep only
-    domains we care about (education + hle). Return filtered df.
-    """
-    domain_col = infer_domain_column(df)
-
-    df = df.copy()
-    df["_domain_norm"] = df[domain_col].apply(normalize_domain)
-
-    before = len(df)
-    df = df[df["_domain_norm"].isin(VALID_DOMAINS)]
-    after = len(df)
-
-    logger.info(
-        "After domain normalization & filtering, %d → %d records remain",
-        before,
-        after,
-    )
-    logger.info(
-        "Normalized domain values: %s",
-        sorted(df["_domain_norm"].dropna().unique()),
-    )
-
-    return df
-
-
 # ----------------------- JSON helpers --------------------
 def _safe_json(s: Any) -> Any:
     if not isinstance(s, str) or not s.strip():
@@ -358,13 +293,10 @@ def plot_overall_stats(stats_df: pd.DataFrame, output_path: str):
 
     ax.set_xticks(list(x))
     ax.set_xticklabels(models)
-    ax.set_ylabel("Pass Rate (%)")
+    ax.set_ylabel("Agreement Rate Autorater vs. Human (%)")
     ax.set_xlabel("Autorater")
     ax.set_ylim(0, 100)
-    ax.set_title(
-        "Overall Agreement – Gemini 3.0 Autorater vs Gemini 2.5 Autorater\n"
-        "(education + HLE, all criteria, on Gemini 2.5 responses)"
-    )
+    ax.set_title("Agreement Autorater vs. Human on Gemini 2.5 responses")
 
     # 95% CI box
     ax.text(
@@ -392,9 +324,8 @@ def plot_overall_stats(stats_df: pd.DataFrame, output_path: str):
 
 # ----------------------- Main ---------------------------
 def main():
-    df = fetch_airtable_dataframe()
-    df_clean = clean_and_filter(df)
-    stats_df = compute_overall_stats(df_clean)
+    df = fetch_airtable_dataframe()  # use ALL rows from the evalset view
+    stats_df = compute_overall_stats(df)
     plot_overall_stats(stats_df, "overall_agreement_gemini_autoraters_on_2_5.png")
     logger.info("Done.")
 

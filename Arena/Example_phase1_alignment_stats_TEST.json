@@ -1,0 +1,8 @@
+{
+  "gemini_alignment": 60.0,
+  "claude_alignment": 70.0,
+  "gpt_alignment": 60.0,
+  "gemini_valid_count": 10,
+  "claude_valid_count": 10,
+  "gpt_valid_count": 10
+}

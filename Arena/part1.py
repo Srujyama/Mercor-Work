@@ -95,9 +95,14 @@ def gemini_lost_strict(example):
     if winner not in ["model_a", "model_b"]:
         return False
 
-    a_is_gem = re.search(GEMINI_NAME_PATTERN, example["model_a"], re.IGNORECASE)
-    b_is_gem = re.search(GEMINI_NAME_PATTERN, example["model_b"], re.IGNORECASE)
+    a_is_gem = bool(re.search(GEMINI_NAME_PATTERN, example["model_a"], re.IGNORECASE))
+    b_is_gem = bool(re.search(GEMINI_NAME_PATTERN, example["model_b"], re.IGNORECASE))
 
+    # Exclude Gemini vs Gemini head-to-head matchups
+    if a_is_gem and b_is_gem:
+        return False
+
+    # Gemini lost: it’s Gemini on one side only, and the *other* side won
     return (a_is_gem and winner == "model_b") or (b_is_gem and winner == "model_a")
 
 

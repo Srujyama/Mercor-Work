@@ -100,16 +100,23 @@ def gemini_lost_strict(example: Dict[str, Any]) -> bool:
     """
     Return True when:
       - The human winner is explicitly model_a or model_b
-      - One of the models' names matches GEMINI_NAME_PATTERN
+      - Exactly one of the models' names matches GEMINI_NAME_PATTERN
       - The *non-Gemini* side is the human winner
+
+    Also explicitly excludes Gemini vs Gemini matchups.
     """
     winner = example["winner"]
     if winner not in ["model_a", "model_b"]:
         return False
 
-    a_is_gem = re.search(GEMINI_NAME_PATTERN, example["model_a"], re.IGNORECASE)
-    b_is_gem = re.search(GEMINI_NAME_PATTERN, example["model_b"], re.IGNORECASE)
+    a_is_gem = bool(re.search(GEMINI_NAME_PATTERN, example["model_a"], re.IGNORECASE))
+    b_is_gem = bool(re.search(GEMINI_NAME_PATTERN, example["model_b"], re.IGNORECASE))
 
+    # Exclude Gemini vs Gemini matchups entirely
+    if a_is_gem and b_is_gem:
+        return False
+
+    # Strict loss: Gemini on one side only, and the other side wins
     return (a_is_gem and winner == "model_b") or (b_is_gem and winner == "model_a")
 
 
@@ -303,6 +310,10 @@ def main():
         except Exception as e:
             p_raw = f"ERROR: {e}"
 
+        g_choice, g_just = parse_choice_and_justification(g_raw)
+        c_choice, c_just = parse_choice_and_justification(c_raw)
+        p_choice, p_just = parse_choice_and_justification(p_raw)
+
         rows.append(
             {
                 "id": ex["id"],
@@ -312,9 +323,14 @@ def main():
                 "original_model_b_name": ex["model_b"],
                 "gemini3_response": gen3,
                 "opponent_response": opponent,
-                "gemini_autorater_pref": parse_choice(g_raw),
-                "claude_autorater_pref": parse_choice(c_raw),
-                "gpt5_autorater_pref": parse_choice(p_raw),
+                # autorater choices
+                "gemini_autorater_pref": g_choice,
+                "claude_autorater_pref": c_choice,
+                "gpt5_autorater_pref": p_choice,
+                # NEW — one-sentence justifications
+                "gemini_autorater_justification": g_just,
+                "claude_autorater_justification": c_just,
+                "gpt5_autorater_justification": p_just,
             }
         )
 

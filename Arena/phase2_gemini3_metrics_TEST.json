@@ -1,0 +1,67 @@
+{
+  "overall": {
+    "num_examples": 10,
+    "original_gemini_human_wins": 7,
+    "original_gemini_human_losses": 3,
+    "original_gemini_human_win_rate": 0.7,
+    "autoraters": {
+      "gemini": {
+        "total_judged": 10,
+        "wins": 10,
+        "win_rate": 1.0
+      },
+      "claude": {
+        "total_judged": 10,
+        "wins": 8,
+        "win_rate": 0.8
+      },
+      "gpt5": {
+        "total_judged": 10,
+        "wins": 9,
+        "win_rate": 0.9
+      }
+    }
+  },
+  "original_loss_subset": {
+    "num_examples": 3,
+    "original_gemini_human_win_rate": 0.0,
+    "autoraters": {
+      "gemini": {
+        "total_judged": 3,
+        "wins": 3,
+        "win_rate": 1.0
+      },
+      "claude": {
+        "total_judged": 3,
+        "wins": 2,
+        "win_rate": 0.6666666666666666
+      },
+      "gpt5": {
+        "total_judged": 3,
+        "wins": 3,
+        "win_rate": 1.0
+      }
+    }
+  },
+  "original_win_subset": {
+    "num_examples": 7,
+    "original_gemini_human_win_rate": 1.0,
+    "autoraters": {
+      "gemini": {
+        "total_judged": 7,
+        "wins": 7,
+        "win_rate": 1.0
+      },
+      "claude": {
+        "total_judged": 7,
+        "wins": 6,
+        "win_rate": 0.8571428571428571
+      },
+      "gpt5": {
+        "total_judged": 7,
+        "wins": 6,
+        "win_rate": 0.8571428571428571
+      }
+    }
+  }
+}

@@ -1,6 +1,7 @@
 # phase2_gemini3_eval.py
 
 import argparse
+import json
 import os
 import re
 from typing import Any, Dict, List, Tuple
@@ -91,6 +92,9 @@ def extract_last_assistant_text(conversation: Any) -> str:
 
 
 def has_gemini(example: Dict[str, Any]) -> bool:
+    """
+    Return True if either model_a or model_b name includes 'gemini'.
+    """
     return re.search(
         GEMINI_NAME_PATTERN, example["model_a"], re.IGNORECASE
     ) or re.search(GEMINI_NAME_PATTERN, example["model_b"], re.IGNORECASE)
@@ -98,14 +102,18 @@ def has_gemini(example: Dict[str, Any]) -> bool:
 
 def gemini_lost_strict(example: Dict[str, Any]) -> bool:
     """
-    Return True when:
-      - The human winner is explicitly model_a or model_b
+    Keep matchups where:
+      - The human winner is explicitly model_a or model_b (no ties / unknown)
       - Exactly one of the models' names matches GEMINI_NAME_PATTERN
-      - The *non-Gemini* side is the human winner
+        (i.e., Gemini vs non-Gemini only)
 
-    Also explicitly excludes Gemini vs Gemini matchups.
+    Excludes:
+      - Gemini vs Gemini matchups
+      - Ties or non-binary winners
     """
     winner = example["winner"]
+
+    # Exclude ties / null / anything not model_a or model_b
     if winner not in ["model_a", "model_b"]:
         return False
 
@@ -116,8 +124,8 @@ def gemini_lost_strict(example: Dict[str, Any]) -> bool:
     if a_is_gem and b_is_gem:
         return False
 
-    # Strict loss: Gemini on one side only, and the other side wins
-    return (a_is_gem and winner == "model_b") or (b_is_gem and winner == "model_a")
+    # Keep matchups where exactly ONE side is Gemini
+    return a_is_gem != b_is_gem
 
 
 # ============================================================
@@ -146,6 +154,7 @@ def call_gemini_autorater(prompt: str) -> str:
 def call_gemini_3_generation(prompt: str) -> str:
     if not GOOGLE_API_KEY_2:
         raise RuntimeError("GOOGLE_API_KEY_2 not set")
+    # Reconfigure with generation key
     genai.configure(api_key=GOOGLE_API_KEY_2)
     model = genai.GenerativeModel("gemini-3-pro-preview")
     resp = model.generate_content(prompt)
@@ -228,6 +237,23 @@ def win_rate(df: pd.DataFrame, col: str) -> float:
     return float((v[col] == "model_a").mean())
 
 
+def autorater_win_stats(df: pd.DataFrame, col: str) -> Dict[str, float]:
+    """
+    Compute win stats for Gemini 3.0 (model_a) for a given autorater column.
+    Returns dict with counts and rates.
+    """
+    valid = df[df[col].isin(["model_a", "model_b"])]
+    total = len(valid)
+    if total == 0:
+        return {"total_judged": 0, "wins": 0, "win_rate": 0.0}
+    wins = int((valid[col] == "model_a").sum())
+    return {
+        "total_judged": int(total),
+        "wins": wins,
+        "win_rate": float(wins / total),
+    }
+
+
 # ============================================================
 # 4. MAIN
 # ============================================================
@@ -236,7 +262,7 @@ def win_rate(df: pd.DataFrame, col: str) -> float:
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--test", action="store_true", help="Run only first 10 strict loss examples"
+        "--test", action="store_true", help="Run only first 10 examples"
     )
     args = parser.parse_args()
 
@@ -244,17 +270,11 @@ def main():
     ds = load_dataset("lmarena-ai/arena-expert-5k")
     train = ds["train"]
 
-    print("Filtering Gemini strict losses...")
+    print("Filtering Gemini vs non-Gemini matchups (no ties, no Gemini-vs-Gemini)...")
     gemini_cases = train.filter(has_gemini)
     gemini_lost = gemini_cases.filter(gemini_lost_strict)
     total_strict = len(gemini_lost)
-    print(f"Total Gemini strict-loss examples: {total_strict}")
-
-    # Spec says 240; log if it differs but don't hard-crash.
-    if total_strict != 240:
-        print(
-            f"NOTE: Expected 240 strict-loss cases, but found {total_strict} in this dataset version."
-        )
+    print(f"Total Gemini vs non-Gemini examples (binary human winner): {total_strict}")
 
     if args.test:
         limit = min(10, total_strict)
@@ -310,6 +330,7 @@ def main():
         except Exception as e:
             p_raw = f"ERROR: {e}"
 
+        # Parse choices + one-sentence justifications
         g_choice, g_just = parse_choice_and_justification(g_raw)
         c_choice, c_just = parse_choice_and_justification(c_raw)
         p_choice, p_just = parse_choice_and_justification(p_raw)
@@ -327,7 +348,7 @@ def main():
                 "gemini_autorater_pref": g_choice,
                 "claude_autorater_pref": c_choice,
                 "gpt5_autorater_pref": p_choice,
-                # NEW — one-sentence justifications
+                # one-sentence justifications
                 "gemini_autorater_justification": g_just,
                 "claude_autorater_justification": c_just,
                 "gpt5_autorater_justification": p_just,
@@ -336,23 +357,80 @@ def main():
 
     df2 = pd.DataFrame(rows)
 
-    # Original strict-loss set: Gemini win rate = 0% by construction
-    original_gemini_win_rate = 0.0
+    # --------------------------------------------------------
+    # Compute metrics: how well did new Gemini do vs original
+    # overall, on original losses, and on original wins
+    # --------------------------------------------------------
+    original_gemini_won_mask = (
+        df2["human_winner_original"] == df2["original_gemini_side"]
+    )
+    original_gemini_lost_mask = ~original_gemini_won_mask
 
+    num_examples = int(len(df2))
+    num_orig_wins = int(original_gemini_won_mask.sum())
+    num_orig_losses = int(original_gemini_lost_mask.sum())
+
+    original_overall_win_rate = (
+        float(num_orig_wins / num_examples) if num_examples > 0 else 0.0
+    )
+    original_loss_win_rate = 0.0  # in the loss subset, Gemini always lost by definition
+    original_win_win_rate = 1.0 if num_orig_wins > 0 else 0.0  # in the win subset
+
+    df_overall = df2
+    df_losses = df2[original_gemini_lost_mask]
+    df_wins = df2[original_gemini_won_mask]
+
+    metrics = {
+        "overall": {
+            "num_examples": num_examples,
+            "original_gemini_human_wins": num_orig_wins,
+            "original_gemini_human_losses": num_orig_losses,
+            "original_gemini_human_win_rate": original_overall_win_rate,
+            "autoraters": {
+                "gemini": autorater_win_stats(df_overall, "gemini_autorater_pref"),
+                "claude": autorater_win_stats(df_overall, "claude_autorater_pref"),
+                "gpt5": autorater_win_stats(df_overall, "gpt5_autorater_pref"),
+            },
+        },
+        "original_loss_subset": {
+            "num_examples": int(len(df_losses)),
+            "original_gemini_human_win_rate": original_loss_win_rate,
+            "autoraters": {
+                "gemini": autorater_win_stats(df_losses, "gemini_autorater_pref"),
+                "claude": autorater_win_stats(df_losses, "claude_autorater_pref"),
+                "gpt5": autorater_win_stats(df_losses, "gpt5_autorater_pref"),
+            },
+        },
+        "original_win_subset": {
+            "num_examples": int(len(df_wins)),
+            "original_gemini_human_win_rate": original_win_win_rate,
+            "autoraters": {
+                "gemini": autorater_win_stats(df_wins, "gemini_autorater_pref"),
+                "claude": autorater_win_stats(df_wins, "claude_autorater_pref"),
+                "gpt5": autorater_win_stats(df_wins, "gpt5_autorater_pref"),
+            },
+        },
+    }
+
+    # --------------------------------------------------------
+    # Simple console summary using win_rate()
+    # --------------------------------------------------------
     print(
-        "\nGemini 3.0 win rates on strict-loss set (conversation_c vs original opponent):"
+        "\nGemini 3.0 win rates on Gemini-vs-non-Gemini set "
+        "(conversation_c vs original opponent):"
     )
     g_wr = win_rate(df2, "gemini_autorater_pref")
     c_wr = win_rate(df2, "claude_autorater_pref")
     p_wr = win_rate(df2, "gpt5_autorater_pref")
 
-    print(
-        f"Original Gemini human win rate on this subset: {original_gemini_win_rate:.3f}"
-    )
+    print(f"Original Gemini human overall win rate: {original_overall_win_rate:.3f}")
     print(f"Gemini autorater Gemini-3.0 win rate: {g_wr:.3f}")
     print(f"Claude autorater Gemini-3.0 win rate: {c_wr:.3f}")
     print(f"GPT-5 autorater Gemini-3.0 win rate: {p_wr:.3f}")
 
+    # --------------------------------------------------------
+    # Save CSV + metrics JSON
+    # --------------------------------------------------------
     out_name = (
         "phase2_gemini3_vs_opponent_strict_TEST.csv"
         if args.test
@@ -360,6 +438,15 @@ def main():
     )
     df2.to_csv(out_name, index=False)
     print(f"\nSaved: {out_name}")
+
+    metrics_file = (
+        "phase2_gemini3_metrics_TEST.json"
+        if args.test
+        else "phase2_gemini3_metrics.json"
+    )
+    with open(metrics_file, "w") as f:
+        json.dump(metrics, f, indent=2)
+    print(f"Saved metrics JSON: {metrics_file}")
 
 
 if __name__ == "__main__":

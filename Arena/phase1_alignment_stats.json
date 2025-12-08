@@ -1,0 +1,8 @@
+{
+  "gemini_alignment": 58.282208588957054,
+  "claude_alignment": 62.048192771084345,
+  "gpt_alignment": 57.831325301204814,
+  "gemini_valid_count": 163,
+  "claude_valid_count": 166,
+  "gpt_valid_count": 166
+}
